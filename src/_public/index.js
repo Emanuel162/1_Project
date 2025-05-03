@@ -29,6 +29,22 @@ let requestData = (parameters) => {
   })
 }
 
+// Takes two elements of the boardgames' rating and merges them into one metric.
+function preprocessedRating(rating, number_of_ratings) {
+
+  // Maximal number for normalization
+  let max_rating = 10
+  let max_number = 10^5
+
+  let coef_rating = 1
+  let coef_number = 1
+
+  // Normalization and merging into one thing.
+  let result = (coef_rating*rating)*(coef_number*number_of_ratings)/(max_rating*max_number)
+
+  return result
+}
+
 /**
  * Assigning the callback to request the data on click.
  */
@@ -48,7 +64,7 @@ const preprocessData = () => {
     return {
       "id": obj.id,
       "title": obj.title,
-      "rating": obj.rating,
+      "rating": preprocessedRating(obj.rating.rating, obj.rating.number_of_ratings),
       "mechanics": obj.mechanics
     }
   });
