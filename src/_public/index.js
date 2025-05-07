@@ -61,12 +61,8 @@ document.getElementById("load_data_button").onclick = () => {
 
 const preprocessData = () => {
   const prepocessedData = obj.boardgames.map(obj => {
-    return {
-      "id": obj.id,
-      "title": obj.title,
-      "rating": preprocessedRating(obj.rating.rating, obj.rating.number_of_ratings),
-      "mechanics": obj.mechanics
-    }
+    obj.rating = preprocessedRating(obj.rating.rating, obj.rating.number_of_ratings);
+    return obj;
   });
 
   return prepocessedData;
