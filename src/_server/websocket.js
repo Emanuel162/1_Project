@@ -5,6 +5,8 @@ import { print_clientConnected, print_clientDisconnected } from "./static/utils.
 // const preprocessing = require("./preprocessing.js")
 import { is_below_max_weight, parse_numbers, calc_bmi } from "./preprocessing.js"
 import { getExampleLDA } from "./druidExample.js";
+import { preprocessLDA } from "../_public/preprocessingLDA.js";
+import { log } from "console";
 
 const file_path = "data/"
 const file_name = "example_data.csv"
@@ -52,6 +54,7 @@ export function setupConnection(socket) {
 
     getExampleLDA(); //Example how to use druidjs. Just prints to the console for now
 
+    const reallda = preprocessLDA()
 
     let parameters = obj.parameters
 
