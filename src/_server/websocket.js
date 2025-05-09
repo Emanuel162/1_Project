@@ -88,6 +88,8 @@ export function setupConnection(socket) {
         });
       });
 
+    // -------------------- GET BOARDGAMES INFO --------------------
+
     // Get Data from JSON
     const readStream = fs.createReadStream(file_path + file_name, {
       encoding: 'utf8',
