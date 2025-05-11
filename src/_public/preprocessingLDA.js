@@ -32,3 +32,16 @@ function preprocessedRating(rating) {
 
   return result;
 }
+
+// Border values of categorical and quantitive attributes (x-a)/b
+// For data preprocessing and (maybe?) visualization
+border_values = {
+  "year" : [1876, 2021],
+  "max_player": [2, 8],
+  "min_player": [1, 3],
+  "minplaytime": [5, 240],
+  "maxplaytime": [20, 1000],
+  "minage" : [8, 17],
+  "rating" : [7.69721, 8.67527],
+  "num_of_reviews": [5157, 96520]
+}
