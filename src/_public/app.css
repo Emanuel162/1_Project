@@ -42,7 +42,7 @@ head,
   display: grid;
   grid-template-columns: 50% auto;
   grid-template-rows: auto;
-  grid-template-areas: "barchart scatterplot";
+  grid-template-areas: "lollipop lollipop" "barchart scatterplot";
 }
 
 .barchart {
@@ -51,6 +51,10 @@ head,
 
 .scatterplot {
   grid-area: scatterplot;
+}
+
+.lollipop {
+  grid-area: lollipop;
 }
 
 .button {

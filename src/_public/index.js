@@ -84,7 +84,7 @@ const handleBoardgamesData = (payload) => {
   console.log(`Fresh boardgame data from Webserver:`);
   console.log(payload);
 
-  data.lollipop = payload.data;
+  data.lollipop = mapData(payload.data);
   draw_lollipop(data.lollipop);
 };
 
@@ -112,3 +112,15 @@ let checkSize = setInterval(() => {
     if (data.scatterplot) draw_scatterplot(data.scatterplot);
   }
 }, 100);
+
+//Make the array of arrays to an array of objects
+const mapData = (data) => {
+  return data.map((boardgameArray) => {
+    return {
+      minage: boardgameArray[0],
+      id: boardgameArray[1],
+      title: boardgameArray[2],
+      rating: boardgameArray[3],
+    };
+  });
+};
