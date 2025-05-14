@@ -57,6 +57,8 @@ let data = {
  * @param {*} payload
  */
 let handleData = (payload) => {
+  //don't show the given scatterplot and barchart
+  return;
   console.log(`Fresh data from Webserver:`);
   console.log(payload);
   // Parse the data into the needed format for the d3 visualizations (if necessary)
