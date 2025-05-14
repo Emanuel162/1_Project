@@ -16,7 +16,7 @@ import { preprocessLDA } from '../_public/preprocessingLDA.js';
 
 const file_path = 'data/';
 const example_file_name = 'example_data.csv';
-const file_name = 'boardgames_100.json';
+const file_name = 'boardgames_40.json';
 
 /**
  * Does some console.logs when a client connected.

@@ -1,8 +1,6 @@
 import * as d3 from 'd3';
 
 const draw_lollipop = (data) => {
-  //Take only 40 boardgames until 100 boardgames fit visually
-  data = data.slice(0, 40);
   console.log('draw lollipop');
   console.log(data);
 
