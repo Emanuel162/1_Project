@@ -16,6 +16,33 @@ export function preprocessLDA(boardgames) {
   ]);
 }
 
+function preprocessDataLDA(boardgames) {
+
+    return boardgames.map((boardgame) => [
+    boardgame.year,
+    boardgame.minplayers,
+    boardgame.maxplayers,
+    boardgame.minplaytime,
+    boardgame.maxplaytime,
+    boardgame.minage,
+    preprocessedRating(boardgame.rating),
+    // A lot of fields for mechanics (try later)
+  ]);
+
+}
+
+export function LDAPipeline(data) {
+  let classes = 0
+
+  data = preprocessDataLDA(data)
+  const X = druid.Matrix.from(data)
+
+  const reductionLDA = new druid.LDA(X, { labels: classes, d: 2 }) //2 dimensions, can use more.
+  const result = reductionLDA.transform()
+  
+  return result
+}
+
 // Takes two elements of the boardgames' rating and merges them into one metric.
 function preprocessedRating(rating) {
   // Maximal number for normalization
