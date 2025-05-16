@@ -32,18 +32,36 @@ function preprocessDataLDA(boardgames, option = "ratings") {
     */
     if (option === "ratings") {
       
-      return boardgames.map((boardgame) => [
-        // Add 0/1 for every field 
-      ])
+      return boardgames.map((boardgame) => getArrayOfCategories(boardgame))
     }
 
+}
+
+// returns an array of n elements (where n = number of all categories) 
+function getArrayOfCategories(boardgame) {
+  let array = []
+  // it can be done better (maybe)
+  let all_categories = [1022, 1020, 1010, 1046, 1047, 1021, 1088, 2710, 1011, 1084, 2145, 1089, 1015, 1026, 1001, 1016, 1113, 1019, 1086, 1102, 1064, 1093, 1082, 
+    1002, 1069, 1055, 1017, 1035, 1024, 1050, 1029, 1008, 1013, 1028, 1094, 1044, 1097, 1115, 1116]
+  
+  let categories = boardgame.types.categories.map(category => category.id)
+
+  for (let i = 0; i < all_categories.length; i++) {
+    if (categories.includes(all_categories[i])) {
+      array.push(1)
+    }
+    else {
+      array.push(0)
+    }
+  }
+  return array
 }
 
 // Function for the whole LDA process 
 export function LDAPipeline(data, number_of_dims, classes_option = "ratings") {
   let classes = generateClasses(data, classes_option)
 
-  data = preprocessDataLDA(data)
+  data = preprocessDataLDA(data, option)
   const X = druid.Matrix.from(data)
 
   const reductionLDA = new druid.LDA(X, { labels: classes, d: number_of_dims }) //2 dimensions, can use more.
