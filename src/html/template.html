@@ -10,15 +10,33 @@
     <div class="root" id="root">
       <div class="banner">Dashboard Template VISVA</div>
       <div class="sidepanel">
-        <label for="max_weight">Filter for weight below ___ kg</label>
-        <input
-          type="text"
+               <!-- Because some functions are tied to these two elements,
+         I didn't delete them and hid them instead.
+        //-->
+        <label hidden for="max_weight">Filter for weight below ___ kg</label>
+        <input 
+          type="hidden"
           id="max_weight"
           value="120"
           name="max_weight"
           placeholder="Max. weight..."
         />
-        <button id="load_data_button" class="button">Load data</button>
+        <!-- Buttons to call our visualizations -->
+        <button id="load_data_button" class="button">Load preproccessed</button>
+        <button id="load_LDA_button" class="button">Load LDA</button>
+        <!-- Parameters of the LDA algorithm -->
+        <label for="number_of_dims">Number of dimensions</label>
+        <input 
+          type="text"
+          id="number_of_dims"
+          value="2"
+          name="max_weight"
+          placeholder="Number of dimensions..."
+        />
+        <label for="classes_options">Option for class selection</label>
+        <select name="classes_options" id="classes_option">
+          <option value="ratings">Rating</option>
+        </select>
       </div>
       <div class="visualizations">
         <div class="barchart">
