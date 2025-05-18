@@ -12,7 +12,7 @@ import {
   calc_bmi,
 } from './preprocessing.js';
 import { getExampleLDA } from './druidExample.js';
-import { preprocessLDA } from '../_public/preprocessingLDA.js';
+import { preprocessLDA, LDAPipeline } from '../_public/preprocessingLDA.js';
 
 const file_path = 'data/';
 const example_file_name = 'example_data.csv';
@@ -109,6 +109,9 @@ export function setupConnection(socket) {
 
         const preprocessedLDA = preprocessLDA(parsedData.boardgames);
 
+        const lda = LDAPipeline(parsedData.boardgames, 2);
+        console.log(lda);
+
         console.log(
           'Result of first ten entry of preprocessed LDA:',
           preprocessedLDA.slice(0, 10)
@@ -116,7 +119,53 @@ export function setupConnection(socket) {
 
         socket.emit('boardgamesData', {
           timestamp: new Date().getTime(),
-          data: preprocessedLDA,
+          preprocessedData: preprocessedLDA,
+          data: parsedData.boardgames,
+        });
+      } catch (err) {
+        console.error('Error parsing JSON: ', err);
+      }
+    });
+
+    // Handle stream errors
+    readStream.on('error', (err) => {
+      console.error('Error reading file:', err);
+    });
+
+    console.log(`freshData emitted`);
+  });
+
+  socket.on('getLDAData', (obj) => {
+    console.log('LDA Data request');
+
+    // Get Data from JSON
+    const readStream = fs.createReadStream(file_path + file_name, {
+      encoding: 'utf8',
+    });
+    let jsonData = '';
+
+    // Collect data chunks
+    readStream.on('data', (chunk) => {
+      jsonData += chunk;
+    });
+
+    // When the stream ends, parse the JSON, preprocess the parsed data and send normal and preprocessed data to frontend
+    readStream.on('end', () => {
+      try {
+        const parsedData = JSON.parse(jsonData);
+        console.log('First Parsed Data Item: ', parsedData.boardgames[0]);
+
+        const preprocessedLDA = preprocessLDA(parsedData.boardgames);
+
+        console.log(
+          'Result of first ten entry of preprocessed LDA:',
+          preprocessedLDA.slice(0, 10)
+        );
+
+        socket.emit('boardgamesData', {
+          timestamp: new Date().getTime(),
+          preprocessedData: preprocessedLDA,
+          data: parsedData.boardgames,
         });
       } catch (err) {
         console.error('Error parsing JSON: ', err);

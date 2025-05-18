@@ -23,10 +23,10 @@ socket.on('disconnect', () => {
  * Callback, when the button is pressed to request the data from the server.
  * @param {*} parameters
  */
-let requestData = (parameters) => {
+let requestData = (socketName, parameters) => {
   console.log(`requesting data from webserver (every 2sec)`);
 
-  socket.emit('getData', {
+  socket.emit(socketName, {
     parameters,
   });
 };
@@ -41,17 +41,12 @@ document.getElementById('load_data_button').onclick = () => {
   } else {
     max_weight = Infinity;
   }
-  requestData({ max_weight });
+  requestData('getData', { max_weight });
 };
 
 document.getElementById('load_LDA_button').onclick = () => {
-  let number_of_dims = document.getElementById('number_of_dims').value;
-  let classes_option = document.getElementById('classes_options').value;
-  let data = 0; // need to get data somehow
-
-  let plot_data = LDAPipeline(data, number_of_dims, classes_option);
-  draw_scatterplot(plot_data)
-}
+  requestData('getLDAData');
+};
 
 /**
  * Object, that will store the loaded data.
@@ -96,8 +91,15 @@ const handleBoardgamesData = (payload) => {
   console.log(`Fresh boardgame data from Webserver:`);
   console.log(payload);
 
-  data.lollipop = mapData(payload.data);
+  data.lollipop = mapData(payload.preprocessedData);
   draw_lollipop(data.lollipop);
+
+  //Start of LDA
+  let number_of_dims = document.getElementById('number_of_dims').value;
+  let classes_option = document.getElementById('classes_options').value;
+
+  let plot_data = LDAPipeline(payload.data, number_of_dims, classes_option);
+  draw_scatterplot(plot_data);
 };
 
 socket.on('freshData', handleData);

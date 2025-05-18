@@ -1,4 +1,4 @@
-  import * as druid from '@saehrimnir/druidjs';
+import * as druid from '@saehrimnir/druidjs';
 
 export function preprocessLDA(boardgames) {
   // Old way (can be commented in)
@@ -18,9 +18,8 @@ export function preprocessLDA(boardgames) {
   ]);
 }
 
-function preprocessDataLDA(boardgames, option = "ratings") {
-
-    /*
+function preprocessDataLDA(boardgames, option = 'ratings') {
+  /*
     return boardgames.map((boardgame) => [
     boardgame.year,
     boardgame.minplayers,
@@ -33,33 +32,34 @@ function preprocessDataLDA(boardgames, option = "ratings") {
     ]);
     */
 
-    if (option === "ratings") {
-      
-      return boardgames.map((boardgame) => 
-        getArrayOfCategories(boardgame))
-
-    }
-
+  if (option === 'ratings') {
+    return boardgames.map((boardgame) => getArrayOfCategories(boardgame));
+  }
 }
 
-// returns an array of n elements (where n = number of all categories) 
+// returns an array of n elements (where n = number of all categories)
 function getArrayOfCategories(boardgame) {
-  let array = []
+  let array = [];
   // it can be done better (maybe)
-  let all_categories = [1022, 1020, 1010, 1046, 1047, 1021, 1088, 2710, 1011, 1084, 2145, 1089, 1015, 1026, 1001, 1016, 1113, 1019, 1086, 1102, 1064, 1093, 1082, 
-    1002, 1069, 1055, 1017, 1035, 1024, 1050, 1029, 1008, 1013, 1028, 1094, 1044, 1097, 1115, 1116]
-  
-  let current_categories = boardgame.types.categories.map(category => category.id)
+  let all_categories = [
+    1022, 1020, 1010, 1046, 1047, 1021, 1088, 2710, 1011, 1084, 2145, 1089,
+    1015, 1026, 1001, 1016, 1113, 1019, 1086, 1102, 1064, 1093, 1082, 1002,
+    1069, 1055, 1017, 1035, 1024, 1050, 1029, 1008, 1013, 1028, 1094, 1044,
+    1097, 1115, 1116,
+  ];
+
+  let current_categories = boardgame.types.categories.map(
+    (category) => category.id
+  );
 
   for (let i = 0; i < all_categories.length; i++) {
     if (current_categories.includes(all_categories[i])) {
-      array.push(1)
-    }
-    else {
-      array.push(0)
+      array.push(1);
+    } else {
+      array.push(0);
     }
   }
-  return array
+  return array;
 }
 /*
 // Function for the whole LDA process 
@@ -93,39 +93,42 @@ function generateClasses(data, classes_option) {
 }
 */
 
-export function LDAPipeline(data, number_of_dims, classes_option = "ratings") {
-    let classes = [];
+export function LDAPipeline(data, number_of_dims, classes_option = 'ratings') {
+  let classes = [];
 
-    // Step 1: Assign classes based on the option
-    if (classes_option === "ratings") {
-        //Compute normalized ratings for each game
-        const normalizedRatings = data.map(game =>
-            preprocessedRating(game.rating)
-        );
+  // Step 1: Assign classes based on the option
+  if (classes_option === 'ratings') {
+    //Compute normalized ratings for each game
+    const normalizedRatings = data.map((game) =>
+      preprocessedRating(game.rating)
+    );
 
-        //Compute mean
-        const mean = normalizedRatings.reduce((a, b) => a + b, 0) / normalizedRatings.length;
+    //Compute mean
+    const mean =
+      normalizedRatings.reduce((a, b) => a + b, 0) / normalizedRatings.length;
 
-        // Assign binary class based on mean
-        classes = normalizedRatings.map(rating =>
-            rating >= mean ? "Above Mean" : "Below Mean"
-        );
-    }
-    else {
-      // For future options
-    }
+    // Assign binary class based on mean
+    classes = normalizedRatings.map((rating) =>
+      rating >= mean ? 'Above Mean' : 'Below Mean'
+    );
+  } else {
+    // For future options
+  }
 
-    // Step 2: Preprocess data into numerical feature matrix
-    const processed = preprocessDataLDA(data, classes_option);
-    const X = druid.Matrix.from(processed);
+  // Step 2: Preprocess data into numerical feature matrix
+  const processed = preprocessDataLDA(data, classes_option);
+  const X = druid.Matrix.from(processed);
 
-    // Step 3: LDA
-    const reductionLDA = new druid.LDA(X, { labels: classes, d: number_of_dims });
+  // Step 3: LDA
+  const reductionLDA = new druid.LDA(X, { labels: classes, d: number_of_dims });
 
-    return {
-        lda: reductionLDA.transform().to2DArray(),
-        labels: classes
-    };
+  console.log('reductionLDA');
+  console.log(reductionLDA);
+
+  return {
+    lda: reductionLDA.transform().to2DArray(),
+    labels: classes,
+  };
 }
 
 // Takes two elements of the boardgames' rating and merges them into one metric.
@@ -139,7 +142,7 @@ function preprocessedRating(rating) {
 
   // Normalization and merging into one thing.
   let result =
-    ((coef_rating * rating.rating) * (coef_number * rating.num_of_reviews)) /
+    (coef_rating * rating.rating * (coef_number * rating.num_of_reviews)) /
     (max_rating * max_number);
 
   return result;
