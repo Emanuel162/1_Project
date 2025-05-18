@@ -5,6 +5,7 @@ import { draw_barchart } from './barchart.js';
 import { draw_scatterplot } from './scatterplot.js';
 import { draw_lollipop } from './lollipop.js';
 import * as d3 from 'd3';
+import { LDAPipeline } from './preprocessingLDA.js';
 
 let hostname = window.location.hostname;
 let protocol = window.location.protocol;
@@ -42,6 +43,15 @@ document.getElementById('load_data_button').onclick = () => {
   }
   requestData({ max_weight });
 };
+
+document.getElementById('load_LDA_button').onclick = () => {
+  let number_of_dims = document.getElementById('number_of_dims').value;
+  let classes_option = document.getElementById('classes_options').value;
+  let data = 0; // need to get data somehow
+
+  let plot_data = LDAPipeline(data, number_of_dims, classes_option);
+  draw_scatterplot(plot_data)
+}
 
 /**
  * Object, that will store the loaded data.
