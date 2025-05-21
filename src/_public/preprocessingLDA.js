@@ -19,18 +19,16 @@ export function preprocessLDA(boardgames) {
 }
 
 function preprocessDataLDA(boardgames, option = 'ratings') {
-  /*
     return boardgames.map((boardgame) => [
-    boardgame.year,
-    boardgame.minplayers,
-    boardgame.maxplayers,
-    boardgame.minplaytime,
-    boardgame.maxplaytime,
-    boardgame.minage,
+    parseInt(boardgame.year),
+    parseInt(boardgame.minplayers),
+    parseInt(boardgame.maxplayers),
+    parseInt(boardgame.minplaytime),
+    parseInt(boardgame.maxplaytime),
+    parseInt(boardgame.minage),
     preprocessedRating(boardgame.rating),
     // A lot of fields for mechanics (try later)
     ]);
-    */
 
   if (option === 'ratings') {
     return boardgames.map((boardgame) => getArrayOfCategories(boardgame));
@@ -109,24 +107,24 @@ export function LDAPipeline(data, number_of_dims, classes_option = 'ratings') {
 
     // Assign binary class based on mean
     classes = normalizedRatings.map((rating) =>
-      rating >= mean ? 'Above Mean' : 'Below Mean'
+      rating >= mean ? "Above Mean" : "Below Mean"
     );
   } else {
     // For future options
   }
 
   // Step 2: Preprocess data into numerical feature matrix
-  const processed = preprocessDataLDA(data, classes_option);
+  const processed = preprocessDataLDA(data, classes_option); 
   const X = druid.Matrix.from(processed);
 
   // Step 3: LDA
-  const reductionLDA = new druid.LDA(X, { labels: classes, d: number_of_dims });
+  const reductionLDA = new druid.LDA(X, { labels: classes, d: number_of_dims }); // <-- THE NaN (in the result) OCCURS HERE
 
   console.log('reductionLDA');
   console.log(reductionLDA);
 
   return {
-    lda: reductionLDA.transform().to2DArray(),
+    lda: reductionLDA.transform().to2DArray,
     labels: classes,
   };
 }
@@ -145,7 +143,7 @@ function preprocessedRating(rating) {
     (coef_rating * rating.rating * (coef_number * rating.num_of_reviews)) /
     (max_rating * max_number);
 
-  return result;
+  return parseFloat(result);
 }
 
 // Border values of categorical and quantitive attributes (x-a)/b
