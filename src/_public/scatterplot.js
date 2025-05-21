@@ -2,8 +2,10 @@ import * as d3 from 'd3';
 
 export function draw_scatterplot(data) {
   console.log('draw scatterplot');
+  data = data.lda;
   console.log(data);
 
+  
   /**
    * Margins of the visualization.
    */
@@ -33,7 +35,7 @@ export function draw_scatterplot(data) {
    */
   const xScale = d3
     .scaleLinear()
-    .domain([0, d3.max(data.map((d) => d.weight))])
+    .domain([0, d3.max(data.map((d) => d[0]))])
     .range([0, width - margin.left - margin.right]);
 
   /**
@@ -41,7 +43,7 @@ export function draw_scatterplot(data) {
    */
   const yScale = d3
     .scaleLinear()
-    .domain([0, d3.max(data.map((d) => d.height))])
+    .domain([0, d3.max(data.map((d) => d[1]))])
     .range([height - margin.top - margin.bottom, 0]);
 
   /**
@@ -58,8 +60,8 @@ export function draw_scatterplot(data) {
     .merge(scatterplot_circle)
     .attr('fill', 'orange')
     .attr('r', 5)
-    .attr('cx', (d) => margin.left + xScale(d.weight))
-    .attr('cy', (d) => yScale(d.height) + margin.top);
+    .attr('cx', (d) => margin.left + xScale(d[0]))
+    .attr('cy', (d) => yScale(d[1]) + margin.top);
 
   scatterplot_circle.exit().remove();
 

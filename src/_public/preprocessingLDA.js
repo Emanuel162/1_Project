@@ -33,7 +33,18 @@ function preprocessDataLDA(boardgames, option = 'ratings') {
     */
 
   if (option === 'ratings') {
-    return boardgames.map((boardgame) => getArrayOfCategories(boardgame));
+    // Option 1: Use only categories -- failed, wasn't able to find determinant
+    //return boardgames.map((boardgame) => getArrayOfCategories(boardgame));
+
+    //Option 2: Use only numeric data
+    return boardgames.map((boardgame) => [
+      preprocessedQuantitive(boardgame.year, border_values['year']),
+      preprocessedQuantitive(boardgame.minplayers, border_values['minplayers']),
+      preprocessedQuantitive(boardgame.maxplayers, border_values['maxplayers']),
+      preprocessedQuantitive(boardgame.minplaytime, border_values['minplaytime']),
+      preprocessedQuantitive(boardgame.maxplaytime, border_values['maxplaytime']),
+      preprocessedQuantitive(boardgame.minage, border_values['minage'])
+    ].concat(getArrayOfCategories(boardgame)))
   }
 }
 
@@ -126,7 +137,7 @@ export function LDAPipeline(data, number_of_dims, classes_option = 'ratings') {
   console.log(reductionLDA);
 
   return {
-    lda: reductionLDA.transform().to2DArray(),
+    lda: reductionLDA.transform(),
     labels: classes,
   };
 }
@@ -148,12 +159,16 @@ function preprocessedRating(rating) {
   return result;
 }
 
+function preprocessedQuantitive(obj, border_values) {
+  return (obj - border_values[0])/(border_values[1] - border_values[0])
+}
+
 // Border values of categorical and quantitive attributes (x-a)/b
 // For data preprocessing and (maybe?) visualization
 const border_values = {
   year: [2002, 2021],
-  max_player: [2, 7],
-  min_player: [1, 3],
+  maxplayers: [2, 7],
+  minplayers: [1, 3],
   minplaytime: [20, 240],
   maxplaytime: [20, 480],
   minage: [10, 14],

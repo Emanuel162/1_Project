@@ -98,7 +98,7 @@ const handleBoardgamesData = (payload) => {
   let number_of_dims = document.getElementById('number_of_dims').value;
   let classes_option = document.getElementById('classes_options').value;
 
-  let plot_data = LDAPipeline(payload.data, number_of_dims, classes_option);
+  let plot_data = LDAPipeline(payload.data, parseInt(number_of_dims), classes_option);
   draw_scatterplot(plot_data);
 };
 
