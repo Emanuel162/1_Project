@@ -2,10 +2,27 @@ import * as d3 from 'd3';
 
 export function draw_scatterplot(data) {
   console.log('draw scatterplot');
-  data = data.lda;
-  console.log(data);
+  let plot_data = data.lda;
+  console.log(plot_data);
+  console.log(data.labels)
 
+  let above_mean_dots = []
+  let below_mean_dots = []
+
+  for (let i = 0; i < data.labels.length; i++) {
+    if (data.labels[i] == "Above Mean") {
+      above_mean_dots.push(data.lda[i])
+    }
+    else {
+      below_mean_dots.push(data.lda[i])
+    }
+  }
+
+  console.log(above_mean_dots)
+  console.log(below_mean_dots)
   
+
+
   /**
    * Margins of the visualization.
    */
@@ -35,7 +52,7 @@ export function draw_scatterplot(data) {
    */
   const xScale = d3
     .scaleLinear()
-    .domain([0, d3.max(data.map((d) => d[0]))])
+    .domain([d3.min(plot_data.map((d) => d[0])), d3.max(plot_data.map((d) => d[0]))])
     .range([0, width - margin.left - margin.right]);
 
   /**
@@ -43,7 +60,7 @@ export function draw_scatterplot(data) {
    */
   const yScale = d3
     .scaleLinear()
-    .domain([0, d3.max(data.map((d) => d[1]))])
+    .domain([d3.min(plot_data.map((d) => d[1])), d3.max(plot_data.map((d) => d[1]))])
     .range([height - margin.top - margin.bottom, 0]);
 
   /**
@@ -51,14 +68,21 @@ export function draw_scatterplot(data) {
    */
   let scatterplot_circle = g_scatterplot
     .selectAll('.scatterplot_circle')
-    .data(data);
+    .data(plot_data);
 
   scatterplot_circle
     .enter()
     .append('circle')
     .attr('class', 'scatterplot_circle')
     .merge(scatterplot_circle)
-    .attr('fill', 'orange')
+    .attr('fill', (d) => {
+      if (above_mean_dots.includes(d)) {
+        return 'green'
+      }
+      else {
+        return 'red'
+      }
+    })
     .attr('r', 5)
     .attr('cx', (d) => margin.left + xScale(d[0]))
     .attr('cy', (d) => yScale(d[1]) + margin.top);

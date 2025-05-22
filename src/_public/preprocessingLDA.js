@@ -135,7 +135,7 @@ export function LDAPipeline(data, number_of_dims, classes_option = 'ratings') {
   console.log(reductionLDA);
 
   return {
-    lda: reductionLDA.transform().to2DArray,
+    lda: reductionLDA.transform().to2dArray,
     labels: classes,
   };
 }
