@@ -36,10 +36,10 @@ export function draw_scatterplot(data, relative_size = true) {
   /**
    * Selection of svg and groups to be drawn on.
    */
-  let svg = d3.select('#scatterplot_svg');
-  let g_scatterplot = d3.select('#g_scatterplot');
-  let g_x_axis_scatterplot = d3.select('#g_x_axis_scatterplot');
-  let g_y_axis_scatterplot = d3.select('#g_y_axis_scatterplot');
+  let svg = d3.select('#vis_svg');
+  let g_scatterplot = d3.select('#g_vis');
+  let g_x_axis_scatterplot = d3.select('#g_x_axis_vis');
+  let g_y_axis_scatterplot = d3.select('#g_y_axis_vis');
 
 
   svg.on("click", function() {

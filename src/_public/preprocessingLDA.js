@@ -41,7 +41,7 @@ function getSelectedFields(boardgame, list) {
   return result
 }
 
-function preprocessDataLDA(boardgames, option = 'ratings',  field_selection) {
+function preprocessDataLDA(boardgames, option = 'ratings',  field_selection = ["year", "minplayers", "maxplayers", "minplaytime", "maxplaytime", "minage"]) {
     return boardgames.map((boardgame) => getSelectedFields(boardgame, field_selection));
 
   if (option === 'ratings') {
