@@ -162,7 +162,7 @@ export function setupConnection(socket) {
           preprocessedLDA.slice(0, 10)
         );
 
-        socket.emit('boardgamesData', {
+        socket.emit('boardgamesLDAData', {
           timestamp: new Date().getTime(),
           preprocessedData: preprocessedLDA,
           data: parsedData.boardgames,

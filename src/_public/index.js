@@ -93,6 +93,9 @@ const handleBoardgamesData = (payload) => {
 
   data.lollipop = mapData(payload.preprocessedData);
   draw_lollipop(data.lollipop);
+};
+
+const handleBoardgamesLDAData = (payload) => {
 
   //Start of LDA
   let number_of_dims = document.getElementById('number_of_dims').value;
@@ -105,6 +108,7 @@ const handleBoardgamesData = (payload) => {
 socket.on('freshData', handleData);
 
 socket.on('boardgamesData', handleBoardgamesData);
+socket.on('boardgamesLDAData', handleBoardgamesLDAData);
 
 let width = 0;
 let height = 0;
