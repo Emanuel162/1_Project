@@ -124,7 +124,9 @@ export function draw_scatterplot(data, relative_size = true) {
   /**
    * Drawing the x-axis label
    */
-  let x_label = g_scatterplot.selectAll('.x_label').data(['Weight (kg)']);
+  let x_label = g_scatterplot
+    .selectAll('.x_label')
+    .data(['X (Linear Discriminant 1)']);
 
   x_label
     .enter()
@@ -141,7 +143,9 @@ export function draw_scatterplot(data, relative_size = true) {
   /**
    * Drawing the y-axis label
    */
-  let y_label = g_scatterplot.selectAll('.y_label').data(['Height (cm)']);
+  let y_label = g_scatterplot
+    .selectAll('.y_label')
+    .data(['Y (Linear Discriminant 2)']);
 
   y_label
     .enter()
