@@ -53,12 +53,14 @@ document.getElementById('classes_options').onchange = () => {
 
   if (option === 'ratings') {
     document.getElementById('check_ratings').hidden = true;
+    document.getElementById('check_ratings').checked = false;
     document.getElementById('label_ratings').hidden = true;
 
     document.getElementById('check_year').hidden = false;
     document.getElementById('label_year').hidden = false;
   } else if (option === 'year') {
     document.getElementById('check_year').hidden = true;
+    document.getElementById('check_year').checked = false;
     document.getElementById('label_year').hidden = true;
   
     document.getElementById('check_ratings').hidden = false;
