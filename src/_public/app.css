@@ -40,9 +40,9 @@ head,
   grid-area: visualizations;
 
   display: grid;
-  grid-template-columns: 50% auto;
+  grid-template-columns: auto;
   grid-template-rows: auto;
-  grid-template-areas: "lollipop lollipop";
+  grid-template-areas: "lollipop" "scatterplot";
 }
 
 .barchart {

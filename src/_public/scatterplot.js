@@ -4,24 +4,21 @@ export function draw_scatterplot(data, relative_size = true) {
   console.log('draw scatterplot');
   let plot_data = data.lda;
   console.log(plot_data);
-  console.log(data.labels)
+  console.log(data.labels);
 
-  let above_mean_dots = []
-  let below_mean_dots = []
+  let above_mean_dots = [];
+  let below_mean_dots = [];
 
   for (let i = 0; i < data.labels.length; i++) {
-    if (data.labels[i] == "Above Mean") {
-      above_mean_dots.push(data.lda[i])
-    }
-    else {
-      below_mean_dots.push(data.lda[i])
+    if (data.labels[i] == 'Above Mean') {
+      above_mean_dots.push(data.lda[i]);
+    } else {
+      below_mean_dots.push(data.lda[i]);
     }
   }
 
-  console.log(above_mean_dots)
-  console.log(below_mean_dots)
-  
-
+  console.log(above_mean_dots);
+  console.log(below_mean_dots);
 
   /**
    * Margins of the visualization.
@@ -36,20 +33,18 @@ export function draw_scatterplot(data, relative_size = true) {
   /**
    * Selection of svg and groups to be drawn on.
    */
-  let svg = d3.select('#vis_svg');
-  let g_scatterplot = d3.select('#g_vis');
-  let g_x_axis_scatterplot = d3.select('#g_x_axis_vis');
-  let g_y_axis_scatterplot = d3.select('#g_y_axis_vis');
+  let svg = d3.select('#scatterplot_svg');
+  let g_scatterplot = d3.select('#g_scatterplot');
+  let g_x_axis_scatterplot = d3.select('#g_x_axis_scatterplot');
+  let g_y_axis_scatterplot = d3.select('#g_y_axis_scatterplot');
 
-
-  svg.on("click", function() {
-    if(relative_size) {
-      draw_scatterplot(data, false)
+  svg.on('click', function () {
+    if (relative_size) {
+      draw_scatterplot(data, false);
+    } else {
+      draw_scatterplot(data, true);
     }
-    else {
-      draw_scatterplot(data, true)
-    }
-  })
+  });
   /**
    * Getting the current width/height of the whole drawing pane.
    */
@@ -57,9 +52,14 @@ export function draw_scatterplot(data, relative_size = true) {
   let height = parseInt(svg.style('height'));
 
   /**
+   * Setting the viewBox for automatic rescaling when the window is resized.
+   */
+  svg.attr('viewBox', `0 0 ${width} ${height}`);
+
+  /**
    * Scale function for the x-axis
    */
-  
+
   let min_domain_x = relative_size ? d3.min(plot_data.map((d) => d[0])) : 0;
   let min_domain_y = relative_size ? d3.min(plot_data.map((d) => d[1])) : 0;
   const xScale = d3
@@ -89,10 +89,9 @@ export function draw_scatterplot(data, relative_size = true) {
     .merge(scatterplot_circle)
     .attr('fill', (d) => {
       if (above_mean_dots.includes(d)) {
-        return 'green'
-      }
-      else {
-        return 'red'
+        return 'green';
+      } else {
+        return 'red';
       }
     })
     .attr('r', 5)

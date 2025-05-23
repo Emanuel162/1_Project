@@ -17,11 +17,11 @@ const draw_lollipop = (data) => {
   /**
    * Selection of svg and groups to be drawn on.
    */
-  let svg = d3.select('#vis_svg');
+  let svg = d3.select('#lollipop_svg');
 
-  let g_lollipop = d3.select('#g_vis');
-  let g_x_axis_lollipop = d3.select('#g_x_axis_vis');
-  let g_y_axis_lollipop = d3.select('#g_y_axis_vis');
+  let g_lollipop = d3.select('#g_lollipop');
+  let g_x_axis_lollipop = d3.select('#g_x_axis_lollipop');
+  let g_y_axis_lollipop = d3.select('#g_y_axis_lollipop');
 
   /**
    * Getting the current width/height of the whole drawing pane.
