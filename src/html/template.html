@@ -41,17 +41,16 @@
           <label for="classes_options">Option for class selection</label>
           <select name="classes_options" id="classes_options">
             <option value="ratings">Rating</option>
+            <option value="year">Year</option>
           </select>
         </div>
         <fieldset>
         <legend>Choose fields for LDA algorithm</legend>
-        <input class="class_checkbox"  checked="true" type="checkbox" id="check_year" name="check_year" value="year" />
-        <label for="check_year">Year</label><br>
 
         <input class="class_checkbox" checked="false" type="checkbox" id="check_minplayers" name="check_minplayers" value="minplayers" />
         <label for="check_minplayers">Minplayers</label><br>
 
-        <input class="class_checkbox" type="checkbox" id="check_minplaytime" name="check_minplaytime" value="minminplaytime" />
+        <input class="class_checkbox" checked="true" type="checkbox" id="check_minplaytime" name="check_minplaytime" value="minminplaytime" />
         <label for="check_minplaytime">Minplaytime</label><br>
 
         <input class="class_checkbox" type="checkbox" id="check_maxplayers" name="check_maxplayers" value="maxplayers" />
@@ -62,6 +61,12 @@
 
         <input class="class_checkbox" type="checkbox" id="check_minage" name="check_minage" value="minage" />
         <label for="check_minage">Minage</label><br>
+        
+        <input hidden="true" class="class_checkbox" type="checkbox" id="check_ratings" name="check_ratings" value="ratings" />
+        <label hidden="true" for="check_ratings" id="label_ratings">Rating</label><br>
+
+        <input class="class_checkbox" type="checkbox" id="check_year" name="check_year" value="year" />
+        <label for="check_year" id="label_year">Year</label><br>
         </fieldset>
       </div>
       <div class="visualizations">

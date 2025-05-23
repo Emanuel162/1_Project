@@ -48,6 +48,24 @@ document.getElementById('load_LDA_button').onclick = () => {
   requestData('getLDAData');
 };
 
+document.getElementById('classes_options').onchange = () => {
+  let option = document.getElementById('classes_options').value;
+
+  if (option === 'ratings') {
+    document.getElementById('check_ratings').hidden = true;
+    document.getElementById('label_ratings').hidden = true;
+
+    document.getElementById('check_year').hidden = false;
+    document.getElementById('label_year').hidden = false;
+  } else if (option === 'year') {
+    document.getElementById('check_year').hidden = true;
+    document.getElementById('label_year').hidden = true;
+  
+    document.getElementById('check_ratings').hidden = false;
+    document.getElementById('label_ratings').hidden = false;
+  }
+}
+
 /**
  * Object, that will store the loaded data.
  */

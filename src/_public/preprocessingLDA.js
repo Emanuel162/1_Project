@@ -55,6 +55,11 @@ function getSelectedFields(boardgame, list) {
         border_values['minage']
       )
     );
+  if (list.includes('ratings')) {
+    result.push(
+      preprocessedRating(boardgame.rating)
+    );
+  }
   }
   return result;
 }
@@ -99,7 +104,20 @@ export function LDAPipeline(
     classes = normalizedRatings.map((rating) =>
       rating >= mean ? 'Above Mean' : 'Below Mean'
     );
-  } else {
+  } 
+  else if (classes_option === 'year') {
+    const normalizedYears = data.map((game) =>
+      preprocessedQuantitive(game.year, border_values["year"])
+    );
+
+    const mean = 
+      normalizedYears.reduce((a, b) => a + b, 0) / normalizedYears.length;
+
+    classes = normalizedYears.map((year) =>
+      year >= mean ? 'Above Mean' : 'Below Mean'
+    );
+  }
+  else {
     // For future options
   }
 
