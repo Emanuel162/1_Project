@@ -18,17 +18,31 @@ export function preprocessLDA(boardgames) {
   ]);
 }
 
-function preprocessDataLDA(boardgames, option = 'ratings') {
-    return boardgames.map((boardgame) => [
-    parseInt(boardgame.year),
-    parseInt(boardgame.minplayers),
-    parseInt(boardgame.maxplayers),
-    parseInt(boardgame.minplaytime),
-    parseInt(boardgame.maxplaytime),
-    parseInt(boardgame.minage),
-    preprocessedRating(boardgame.rating),
-    // A lot of fields for mechanics (try later)
-    ]);
+function getSelectedFields(boardgame, list) {
+  let result = []
+  if (list.includes('year')) {
+    result.push(parseInt(boardgame.year))
+  }
+  if (list.includes("minplayers")) {
+    result.push(parseInt(boardgame.minplayers))
+  }
+  if (list.includes("maxplayers")) {
+    result.push(parseInt(boardgame.maxplayers))
+  }
+  if (list.includes("minplaytime")) {
+    result.push(parseInt(boardgame.minplaytime))
+  }
+  if (list.includes("maxplaytime")) {
+    result.push(parseInt(boardgame.maxplaytime))
+  }
+  if (list.includes("minage")) {
+    result.push(parseInt(boardgame.minage))
+  }
+  return result
+}
+
+function preprocessDataLDA(boardgames, option = 'ratings',  field_selection) {
+    return boardgames.map((boardgame) => getSelectedFields(boardgame, field_selection));
 
   if (option === 'ratings') {
     // Option 1: Use only categories -- failed, wasn't able to find determinant
@@ -102,7 +116,7 @@ function generateClasses(data, classes_option) {
 }
 */
 
-export function LDAPipeline(data, number_of_dims, classes_option = 'ratings') {
+export function LDAPipeline(data, number_of_dims, classes_option = 'ratings', field_selection) {
   let classes = [];
 
   // Step 1: Assign classes based on the option
@@ -125,7 +139,9 @@ export function LDAPipeline(data, number_of_dims, classes_option = 'ratings') {
   }
 
   // Step 2: Preprocess data into numerical feature matrix
-  const processed = preprocessDataLDA(data, classes_option); 
+  const processed = preprocessDataLDA(data, classes_option, field_selection); 
+  console.log("processed data")
+  console.log(processed)
   const X = druid.Matrix.from(processed);
 
   // Step 3: LDA

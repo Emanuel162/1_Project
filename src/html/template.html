@@ -21,22 +21,48 @@
           name="max_weight"
           placeholder="Max. weight..."
         />
-        <!-- Buttons to call our visualizations -->
-        <button id="load_data_button" class="button">Load preproccessed</button>
-        <button id="load_LDA_button" class="button">Load LDA</button>
+        <div style="padding-bottom: 20px;">
+          <!-- Buttons to call our visualizations -->
+          <button id="load_data_button" class="button">Load preproccessed</button>
+          <button id="load_LDA_button" class="button">Load LDA</button>
+        </div>
         <!-- Parameters of the LDA algorithm -->
-        <label for="number_of_dims">Number of dimensions</label>
-        <input 
-          type="text"
-          id="number_of_dims"
-          value="2"
-          name="max_weight"
-          placeholder="Number of dimensions..."
-        />
-        <label for="classes_options">Option for class selection</label>
-        <select name="classes_options" id="classes_options">
-          <option value="ratings">Rating</option>
-        </select>
+        <div style="padding-bottom: 20px;">
+          <label for="number_of_dims">Number of dimensions</label>
+          <input 
+            type="text"
+            id="number_of_dims"
+            value="2"
+            name="max_weight"
+            placeholder="Number of dimensions..."
+          />
+        </div>
+        <div style="padding-bottom: 20px;">
+          <label for="classes_options">Option for class selection</label>
+          <select name="classes_options" id="classes_options">
+            <option value="ratings">Rating</option>
+          </select>
+        </div>
+        <fieldset>
+        <legend>Choose fields for LDA algorithm</legend>
+        <input class="class_checkbox"  checked="true" type="checkbox" id="check_year" name="check_year" value="year" />
+        <label for="check_year">Year</label><br>
+
+        <input class="class_checkbox" checked="false" type="checkbox" id="check_minplayers" name="check_minplayers" value="minplayers" />
+        <label for="check_minplayers">Minplayers</label><br>
+
+        <input class="class_checkbox" type="checkbox" id="check_minplaytime" name="check_minplaytime" value="minminplaytime" />
+        <label for="check_minplayers">Minplaytime</label><br>
+
+        <input class="class_checkbox" type="checkbox" id="check_maxplayers" name="check_maxplayers" value="maxplayers" />
+        <label for="check_maxplayers">Maxplayers</label><br>
+
+        <input class="class_checkbox" type="checkbox" id="check_maxplaytime" name="check_maxplaytime" value="maxplaytime" />
+        <label for="check_maxplaytime">Minplayers</label><br>
+
+        <input class="class_checkbox" type="checkbox" id="check_minage" name="check_minage" value="minage" />
+        <label for="check_minage">Minage</label><br>
+        </fieldset>
       </div>
       <div class="visualizations">
         <div class="barchart">

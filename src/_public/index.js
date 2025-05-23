@@ -101,7 +101,11 @@ const handleBoardgamesLDAData = (payload) => {
   let number_of_dims = document.getElementById('number_of_dims').value;
   let classes_option = document.getElementById('classes_options').value;
 
-  let plot_data = LDAPipeline(payload.data, parseInt(number_of_dims), classes_option);
+  let field_selection = Array.from(document.querySelectorAll('input[class=class_checkbox]:checked'));
+  field_selection = field_selection.map((checkbox) => checkbox.getAttribute("value"));
+  console.log(field_selection);
+
+  let plot_data = LDAPipeline(payload.data, parseInt(number_of_dims), classes_option, field_selection);
   draw_scatterplot(plot_data);
 };
 
