@@ -1,15 +1,6 @@
 import * as druid from '@saehrimnir/druidjs';
 
 export function preprocessLDA(boardgames) {
-  // Old way (can be commented in)
-  //const result = []
-  //
-  //  obj.boardgames.map(boardgame => {
-  //      result.push([boardgame.minage, boardgame.id])
-  //  })
-  //
-  //return result
-
   return boardgames.map((boardgame) => [
     boardgame.minage,
     boardgame.id,
@@ -19,104 +10,51 @@ export function preprocessLDA(boardgames) {
 }
 
 function getSelectedFields(boardgame, list) {
-  let result = []
+  let result = [];
   if (list.includes('year')) {
-    result.push(parseInt(boardgame.year))
+    result.push(preprocessedQuantitive(parseInt(boardgame.year)));
   }
-  if (list.includes("minplayers")) {
-    result.push(parseInt(boardgame.minplayers))
+  if (list.includes('minplayers')) {
+    result.push(preprocessedQuantitive(parseInt(boardgame.minplayers)));
   }
-  if (list.includes("maxplayers")) {
-    result.push(parseInt(boardgame.maxplayers))
+  if (list.includes('maxplayers')) {
+    result.push(preprocessedQuantitive(parseInt(boardgame.maxplayers)));
   }
-  if (list.includes("minplaytime")) {
-    result.push(parseInt(boardgame.minplaytime))
+  if (list.includes('minplaytime')) {
+    result.push(preprocessedQuantitive(parseInt(boardgame.minplaytime)));
   }
-  if (list.includes("maxplaytime")) {
-    result.push(parseInt(boardgame.maxplaytime))
+  if (list.includes('maxplaytime')) {
+    result.push(preprocessedQuantitive(parseInt(boardgame.maxplaytime)));
   }
-  if (list.includes("minage")) {
-    result.push(parseInt(boardgame.minage))
+  if (list.includes('minage')) {
+    result.push(preprocessedQuantitive(parseInt(boardgame.minage)));
   }
-  return result
+  return result;
 }
 
-function preprocessDataLDA(boardgames, option = 'ratings',  field_selection = ["year", "minplayers", "maxplayers", "minplaytime", "maxplaytime", "minage"]) {
-    return boardgames.map((boardgame) => getSelectedFields(boardgame, field_selection));
-
-  if (option === 'ratings') {
-    // Option 1: Use only categories -- failed, wasn't able to find determinant
-    //return boardgames.map((boardgame) => getArrayOfCategories(boardgame));
-
-    //Option 2: Use only numeric data
-    return boardgames.map((boardgame) => [
-      preprocessedQuantitive(boardgame.year, border_values['year']),
-      preprocessedQuantitive(boardgame.minplayers, border_values['minplayers']),
-      preprocessedQuantitive(boardgame.maxplayers, border_values['maxplayers']),
-      preprocessedQuantitive(boardgame.minplaytime, border_values['minplaytime']),
-      preprocessedQuantitive(boardgame.maxplaytime, border_values['maxplaytime']),
-      preprocessedQuantitive(boardgame.minage, border_values['minage'])
-    ].concat(getArrayOfCategories(boardgame)))
-  }
-}
-
-// returns an array of n elements (where n = number of all categories)
-function getArrayOfCategories(boardgame) {
-  let array = [];
-  // it can be done better (maybe)
-  let all_categories = [
-    1022, 1020, 1010, 1046, 1047, 1021, 1088, 2710, 1011, 1084, 2145, 1089,
-    1015, 1026, 1001, 1016, 1113, 1019, 1086, 1102, 1064, 1093, 1082, 1002,
-    1069, 1055, 1017, 1035, 1024, 1050, 1029, 1008, 1013, 1028, 1094, 1044,
-    1097, 1115, 1116,
-  ];
-
-  let current_categories = boardgame.types.categories.map(
-    (category) => category.id
+function preprocessDataLDA(
+  boardgames,
+  option = 'ratings',
+  field_selection = [
+    'year',
+    'minplayers',
+    'maxplayers',
+    'minplaytime',
+    'maxplaytime',
+    'minage',
+  ]
+) {
+  return boardgames.map((boardgame) =>
+    getSelectedFields(boardgame, field_selection)
   );
-
-  for (let i = 0; i < all_categories.length; i++) {
-    if (current_categories.includes(all_categories[i])) {
-      array.push(1);
-    } else {
-      array.push(0);
-    }
-  }
-  return array;
-}
-/*
-// Function for the whole LDA process 
-export function LDAPipeline(data, number_of_dims, classes_option = "ratings") {
-  let classes = generateClasses(data, classes_option)
-
-  data = preprocessDataLDA(data, option)
-  const X = druid.Matrix.from(data)
-
-  const reductionLDA = new druid.LDA(X, { labels: classes, d: number_of_dims }) //2 dimensions, can use more.
-  const result = reductionLDA.transform()
-  
-  return result
 }
 
-// Generates array of classes based on the data and selected option
-function generateClasses(data, classes_option) {
-  let classes = []
-  if (classes_option == "ratings") {
-    let middle = (border_values["rating"][1] - border_values["rating"][0])/2 + border_values["rating"][0] // a + (b-a)/2
-    for (let i = 0; i < data.boardgames.length; i++) {
-      if (data.boardgames[i].rating.rating <= middle) {
-        classes.push("low")
-      }
-      else {
-        classes.push("high")
-      }
-    }
-  }
-  return classes
-}
-*/
-
-export function LDAPipeline(data, number_of_dims, classes_option = 'ratings', field_selection) {
+export function LDAPipeline(
+  data,
+  number_of_dims,
+  classes_option = 'ratings',
+  field_selection
+) {
   let classes = [];
 
   // Step 1: Assign classes based on the option
@@ -132,23 +70,18 @@ export function LDAPipeline(data, number_of_dims, classes_option = 'ratings', fi
 
     // Assign binary class based on mean
     classes = normalizedRatings.map((rating) =>
-      rating >= mean ? "Above Mean" : "Below Mean"
+      rating >= mean ? 'Above Mean' : 'Below Mean'
     );
   } else {
     // For future options
   }
 
   // Step 2: Preprocess data into numerical feature matrix
-  const processed = preprocessDataLDA(data, classes_option, field_selection); 
-  console.log("processed data")
-  console.log(processed)
+  const processed = preprocessDataLDA(data, classes_option, field_selection);
   const X = druid.Matrix.from(processed);
 
   // Step 3: LDA
   const reductionLDA = new druid.LDA(X, { labels: classes, d: number_of_dims }); // <-- THE NaN (in the result) OCCURS HERE
-
-  console.log('reductionLDA');
-  console.log(reductionLDA);
 
   return {
     lda: reductionLDA.transform().to2dArray,
@@ -174,7 +107,7 @@ function preprocessedRating(rating) {
 }
 
 function preprocessedQuantitive(obj, border_values) {
-  return (obj - border_values[0])/(border_values[1] - border_values[0])
+  return (obj - border_values[0]) / (border_values[1] - border_values[0]);
 }
 
 // Border values of categorical and quantitive attributes (x-a)/b
