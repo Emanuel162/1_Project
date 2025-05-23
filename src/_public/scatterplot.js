@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 
-export function draw_scatterplot(data) {
+export function draw_scatterplot(data, relative_size = true) {
   console.log('draw scatterplot');
   let plot_data = data.lda;
   console.log(plot_data);
@@ -41,6 +41,15 @@ export function draw_scatterplot(data) {
   let g_x_axis_scatterplot = d3.select('#g_x_axis_scatterplot');
   let g_y_axis_scatterplot = d3.select('#g_y_axis_scatterplot');
 
+
+  svg.on("click", function() {
+    if(relative_size) {
+      draw_scatterplot(data, false)
+    }
+    else {
+      draw_scatterplot(data, true)
+    }
+  })
   /**
    * Getting the current width/height of the whole drawing pane.
    */
@@ -50,9 +59,12 @@ export function draw_scatterplot(data) {
   /**
    * Scale function for the x-axis
    */
+  
+  let min_domain_x = relative_size ? d3.min(plot_data.map((d) => d[0])) : 0;
+  let min_domain_y = relative_size ? d3.min(plot_data.map((d) => d[1])) : 0;
   const xScale = d3
     .scaleLinear()
-    .domain([d3.min(plot_data.map((d) => d[0])), d3.max(plot_data.map((d) => d[0]))])
+    .domain([min_domain_x, d3.max(plot_data.map((d) => d[0]))])
     .range([0, width - margin.left - margin.right]);
 
   /**
@@ -60,7 +72,7 @@ export function draw_scatterplot(data) {
    */
   const yScale = d3
     .scaleLinear()
-    .domain([d3.min(plot_data.map((d) => d[1])), d3.max(plot_data.map((d) => d[1]))])
+    .domain([min_domain_y, d3.max(plot_data.map((d) => d[1]))])
     .range([height - margin.top - margin.bottom, 0]);
 
   /**
