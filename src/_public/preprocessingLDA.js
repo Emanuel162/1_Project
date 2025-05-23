@@ -12,22 +12,49 @@ export function preprocessLDA(boardgames) {
 function getSelectedFields(boardgame, list) {
   let result = [];
   if (list.includes('year')) {
-    result.push(preprocessedQuantitive(parseInt(boardgame.year)));
+    result.push(
+      preprocessedQuantitive(parseInt(boardgame.year), border_values['year'])
+    );
   }
   if (list.includes('minplayers')) {
-    result.push(preprocessedQuantitive(parseInt(boardgame.minplayers)));
+    result.push(
+      preprocessedQuantitive(
+        parseInt(boardgame.minplayers),
+        border_values['minplayers']
+      )
+    );
   }
   if (list.includes('maxplayers')) {
-    result.push(preprocessedQuantitive(parseInt(boardgame.maxplayers)));
+    result.push(
+      preprocessedQuantitive(
+        parseInt(boardgame.maxplayers),
+        border_values['maxplayers']
+      )
+    );
   }
   if (list.includes('minplaytime')) {
-    result.push(preprocessedQuantitive(parseInt(boardgame.minplaytime)));
+    result.push(
+      preprocessedQuantitive(
+        parseInt(boardgame.minplaytime),
+        border_values['minplaytime']
+      )
+    );
   }
   if (list.includes('maxplaytime')) {
-    result.push(preprocessedQuantitive(parseInt(boardgame.maxplaytime)));
+    result.push(
+      preprocessedQuantitive(
+        parseInt(boardgame.maxplaytime),
+        border_values['maxplaytime']
+      )
+    );
   }
   if (list.includes('minage')) {
-    result.push(preprocessedQuantitive(parseInt(boardgame.minage)));
+    result.push(
+      preprocessedQuantitive(
+        parseInt(boardgame.minage),
+        border_values['minage']
+      )
+    );
   }
   return result;
 }
