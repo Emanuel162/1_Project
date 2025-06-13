@@ -1,4 +1,3 @@
-import * as druid from '@saehrimnir/druidjs';
 import { kMeans } from './kmeans.js';
 
 export function kMeansPipeline(boardgames, k = 3) {
@@ -44,6 +43,10 @@ function normalizeData(data) {
 }
 
 
-const matrix = druid.Matrix.from(normalizedData);
-const pca = new druid.PCA(matrix, { d: 2 }); // reduce to 2 dimensions
-const reduced = pca.transform().to2dArray;   
+import * as druid from '@saehrimnir/druidjs';
+
+export function runPCAForVisualization(normalizedData, dimensions = 2) {
+    const matrix = druid.Matrix.from(normalizedData);
+    const pca = new druid.PCA(matrix, { d: dimensions });
+    return pca.transform().to2dArray(); 
+}
