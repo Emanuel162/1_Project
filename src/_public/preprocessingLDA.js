@@ -2,7 +2,6 @@ import * as druid from '@saehrimnir/druidjs';
 
 export function preprocessLDA(boardgames) {
   return boardgames.map((boardgame) => [
-    boardgame.minage,
     boardgame.id,
     boardgame.title,
     preprocessedRating(boardgame.rating),
@@ -55,11 +54,9 @@ function getSelectedFields(boardgame, list) {
         border_values['minage']
       )
     );
-  if (list.includes('ratings')) {
-    result.push(
-      preprocessedRating(boardgame.rating)
-    );
-  }
+    if (list.includes('ratings')) {
+      result.push(preprocessedRating(boardgame.rating));
+    }
   }
   return result;
 }
@@ -104,20 +101,18 @@ export function LDAPipeline(
     classes = normalizedRatings.map((rating) =>
       rating >= mean ? 'Above Mean' : 'Below Mean'
     );
-  } 
-  else if (classes_option === 'year') {
+  } else if (classes_option === 'year') {
     const normalizedYears = data.map((game) =>
-      preprocessedQuantitive(game.year, border_values["year"])
+      preprocessedQuantitive(game.year, border_values['year'])
     );
 
-    const mean = 
+    const mean =
       normalizedYears.reduce((a, b) => a + b, 0) / normalizedYears.length;
 
     classes = normalizedYears.map((year) =>
       year >= mean ? 'Above Mean' : 'Below Mean'
     );
-  }
-  else {
+  } else {
     // For future options
   }
 
