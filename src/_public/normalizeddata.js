@@ -1,6 +1,6 @@
 import { kMeans } from './kmeans.js';
 
-export function kMeansPipeline(boardgames, k = 3) {
+export function kMeansPipeline(boardgames, k = 3, n = 100) {
     const rawData = boardgames.map(game => [
         game.minplayers,
         game.maxplayers,
@@ -10,6 +10,9 @@ export function kMeansPipeline(boardgames, k = 3) {
         game.rating.rating,
         game.rating.num_of_reviews
     ]);
+
+    // should subtract one, otherwise we will get n+1 elements
+    const selectedRawData = rawData.slice(0, n-1);
 
     const normalizedData = normalizeData(rawData);
     const contributionPerVariable = Array(normalizedData[0].length).fill(1 / normalizedData[0].length);
