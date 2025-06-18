@@ -1,14 +1,21 @@
 import { kMeans } from './kmeans.js';
 
-export function kMeansPipeline(boardgames, k = 3, n = 100) {
-    const rawData = boardgames.map(game => [
-        game.minplayers,
-        game.maxplayers,
-        game.minplaytime,
-        game.maxplaytime,
-        game.minage,
-        game.rating.rating,
-        game.rating.num_of_reviews
+export function kMeansPipeline(gameItems, k = 3, n = 100) {
+    const rawData = gameItems.map(game => [
+        game.minPlayers,
+        game.maxPlayers,
+        game.minPlayersRec,
+        game.maxPlayersRec,
+        game.minPlayersBest,
+        game.maxPlayersBest,
+        game.minAge,
+        game.minTime,
+        game.maxTime,
+        game.numVotes,
+        game.avgRating,
+        game.stddevRating,
+        game.bayesrating,
+        game.complexity,
     ]);
 
     // should subtract one, otherwise we will get n+1 elements
@@ -21,9 +28,9 @@ export function kMeansPipeline(boardgames, k = 3, n = 100) {
 
     return {
         centroids: result.centroids,
-        clusterAssignments: boardgames.map((game, i) => ({
+        clusterAssignments: gameItems.map((game, i) => ({
             title: game.title,
-            cluster: result.dataPoints[i].centroidIndex
+            cluster: result[i].dataPoint[result[i].centroidIndex]
         }))
     };
 }

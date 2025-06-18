@@ -6,6 +6,7 @@ import {draw_scatterplot} from './scatterplot.js';
 import {draw_lollipop} from './lollipop.js';
 import * as d3 from 'd3';
 import {LDAPipeline} from './preprocessingLDA.js';
+import {kMeansPipeline} from "./normalizeddata.js";
 
 let hostname = window.location.hostname;
 let protocol = window.location.protocol;
@@ -137,6 +138,10 @@ const handleBoardgamesLDAData = (payload) => {
 const handleRealisticData = (payload) => {
     console.log("payload");
     console.log(payload);
+
+    const kMeans = kMeansPipeline(payload.data.gameItems, 2,2);
+    console.log("kMeans")
+    console.log(kMeans)
 }
 
 socket.on('freshData', handleData);
