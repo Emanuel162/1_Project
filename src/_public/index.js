@@ -1,11 +1,11 @@
 import io from 'socket.io-client';
 import './app.css';
-import { configs } from '../_server/static/configs.js';
-import { draw_barchart } from './barchart.js';
-import { draw_scatterplot } from './scatterplot.js';
-import { draw_lollipop } from './lollipop.js';
+import {configs} from '../_server/static/configs.js';
+import {draw_barchart} from './barchart.js';
+import {draw_scatterplot} from './scatterplot.js';
+import {draw_lollipop} from './lollipop.js';
 import * as d3 from 'd3';
-import { LDAPipeline } from './preprocessingLDA.js';
+import {LDAPipeline} from './preprocessingLDA.js';
 
 let hostname = window.location.hostname;
 let protocol = window.location.protocol;
@@ -13,66 +13,73 @@ const socketUrl = protocol + '//' + hostname + ':' + configs.port;
 
 export const socket = io(socketUrl);
 socket.on('connect', () => {
-  console.log('Connected to ' + socketUrl + '.');
+    console.log('Connected to ' + socketUrl + '.');
 });
 socket.on('disconnect', () => {
-  console.log('Disconnected from ' + socketUrl + '.');
+    console.log('Disconnected from ' + socketUrl + '.');
 });
 
 /**
  * Callback, when the button is pressed to request the data from the server.
+ * @param socketName name of the socket to emit
  * @param {*} parameters
  */
 let requestData = (socketName, parameters) => {
-  console.log(`requesting data from webserver (every 2sec)`);
+    console.log(`requesting data from webserver (every 2sec)`);
 
-  socket.emit(socketName, {
-    parameters,
-  });
+    socket.emit(socketName, {
+        parameters,
+    });
 };
 
 /**
  * Assigning the callback to request the data on click.
  */
 document.getElementById('load_data_button').onclick = () => {
-  let max_weight = document.getElementById('max_weight').value;
-  if (!isNaN(max_weight)) {
-    max_weight = parseFloat(max_weight);
-  } else {
-    max_weight = Infinity;
-  }
-  requestData('getData', { max_weight });
+    let max_weight = document.getElementById('max_weight').value;
+    if (!isNaN(max_weight)) {
+        max_weight = parseFloat(max_weight);
+    } else {
+        max_weight = Infinity;
+    }
+    requestData('getData', {max_weight});
 };
 
+//Button for Task 1
 document.getElementById('load_LDA_button').onclick = () => {
-  requestData('getLDAData');
+    requestData('getLDAData');
+};
+
+//Button for Task 2
+document.getElementById('load_realistic_data_button').onclick = () => {
+    requestData('getRealisticData');
 };
 
 document.getElementById('classes_options').onchange = () => {
-  let option = document.getElementById('classes_options').value;
+    let option = document.getElementById('classes_options').value;
 
-  if (option === 'ratings') {
-    document.getElementById('check_ratings').hidden = true;
-    document.getElementById('label_ratings').hidden = true;
+    if (option === 'ratings') {
+        document.getElementById('check_ratings').hidden = true;
+        document.getElementById('label_ratings').hidden = true;
 
-    document.getElementById('check_year').hidden = false;
-    document.getElementById('label_year').hidden = false;
-  } else if (option === 'year') {
-    document.getElementById('check_year').hidden = true;
-    document.getElementById('label_year').hidden = true;
-  
-    document.getElementById('check_ratings').hidden = false;
-    document.getElementById('label_ratings').hidden = false;
-  }
+        document.getElementById('check_year').hidden = false;
+        document.getElementById('label_year').hidden = false;
+    } else if (option === 'year') {
+        document.getElementById('check_year').hidden = true;
+        document.getElementById('label_year').hidden = true;
+
+        document.getElementById('check_ratings').hidden = false;
+        document.getElementById('label_ratings').hidden = false;
+    }
 }
 
 /**
  * Object, that will store the loaded data.
  */
 let data = {
-  barchart: undefined,
-  scatterplot: undefined,
-  lollipop: undefined,
+    barchart: undefined,
+    scatterplot: undefined,
+    lollipop: undefined,
 };
 
 /**
@@ -80,57 +87,64 @@ let data = {
  * @param {*} payload
  */
 let handleData = (payload) => {
-  //don't show the given scatterplot and barchart
-  return;
-  console.log(`Fresh data from Webserver:`);
-  console.log(payload);
-  // Parse the data into the needed format for the d3 visualizations (if necessary)
-  // Here, the barchart shows two bars
-  // So the data is preprocessed accordingly
+    //don't show the given scatterplot and barchart
+    return;
+    console.log(`Fresh data from Webserver:`);
+    console.log(payload);
+    // Parse the data into the needed format for the d3 visualizations (if necessary)
+    // Here, the barchart shows two bars
+    // So the data is preprocessed accordingly
 
-  let count_too_much_weight = 0;
-  let count_good_weight = 0;
+    let count_too_much_weight = 0;
+    let count_good_weight = 0;
 
-  for (let person of payload.data) {
-    if (person.bmi >= 25) {
-      count_too_much_weight++;
-    } else {
-      count_good_weight++;
+    for (let person of payload.data) {
+        if (person.bmi >= 25) {
+            count_too_much_weight++;
+        } else {
+            count_good_weight++;
+        }
     }
-  }
 
-  data.barchart = [count_too_much_weight, count_good_weight];
-  data.scatterplot = payload.data;
-  draw_barchart(data.barchart);
-  draw_scatterplot(data.scatterplot);
+    data.barchart = [count_too_much_weight, count_good_weight];
+    data.scatterplot = payload.data;
+    draw_barchart(data.barchart);
+    draw_scatterplot(data.scatterplot);
 };
 
 const handleBoardgamesData = (payload) => {
-  console.log(`Fresh boardgame data from Webserver:`);
-  console.log(payload);
+    console.log(`Fresh boardgame data from Webserver:`);
+    console.log(payload);
 
-  data.lollipop = mapData(payload.preprocessedData);
-  draw_lollipop(data.lollipop);
+    data.lollipop = mapData(payload.preprocessedData);
+    draw_lollipop(data.lollipop);
 };
 
 const handleBoardgamesLDAData = (payload) => {
 
-  //Start of LDA
-  let number_of_dims = document.getElementById('number_of_dims').value;
-  let classes_option = document.getElementById('classes_options').value;
+    //Start of LDA
+    let number_of_dims = document.getElementById('number_of_dims').value;
+    let classes_option = document.getElementById('classes_options').value;
 
-  let field_selection = Array.from(document.querySelectorAll('input[class=class_checkbox]:checked'));
-  field_selection = field_selection.map((checkbox) => checkbox.getAttribute("value"));
-  console.log(field_selection);
+    let field_selection = Array.from(document.querySelectorAll('input[class=class_checkbox]:checked'));
+    field_selection = field_selection.map((checkbox) => checkbox.getAttribute("value"));
+    console.log(field_selection);
 
-  let plot_data = LDAPipeline(payload.data, parseInt(number_of_dims), classes_option, field_selection);
-  draw_scatterplot(plot_data);
+    let plot_data = LDAPipeline(payload.data, parseInt(number_of_dims), classes_option, field_selection);
+    draw_scatterplot(plot_data);
 };
+
+const handleRealisticData = (payload) => {
+    console.log("payload");
+    console.log(payload);
+}
 
 socket.on('freshData', handleData);
 
 socket.on('boardgamesData', handleBoardgamesData);
 socket.on('boardgamesLDAData', handleBoardgamesLDAData);
+
+socket.on('realisticData', handleRealisticData);
 
 let width = 0;
 let height = 0;
@@ -143,24 +157,24 @@ let height = 0;
  * To much computational load will result in stuttering and reduced responsiveness!
  */
 let checkSize = setInterval(() => {
-  let container = d3.select('.visualizations');
-  let newWidth = parseInt(container.style('width'));
-  let newHeight = parseInt(container.style('height'));
-  if (newWidth !== width || newHeight !== height) {
-    width = newWidth;
-    height = newHeight;
-    if (data.scatterplot) draw_scatterplot(data.scatterplot);
-  }
+    let container = d3.select('.visualizations');
+    let newWidth = parseInt(container.style('width'));
+    let newHeight = parseInt(container.style('height'));
+    if (newWidth !== width || newHeight !== height) {
+        width = newWidth;
+        height = newHeight;
+        if (data.scatterplot) draw_scatterplot(data.scatterplot);
+    }
 }, 100);
 
 //Make the array of arrays to an array of objects
 const mapData = (data) => {
-  return data.map((boardgameArray) => {
-    return {
-      minage: boardgameArray[0],
-      id: boardgameArray[1],
-      title: boardgameArray[2],
-      rating: boardgameArray[3],
-    };
-  });
+    return data.map((boardgameArray) => {
+        return {
+            minage: boardgameArray[0],
+            id: boardgameArray[1],
+            title: boardgameArray[2],
+            rating: boardgameArray[3],
+        };
+    });
 };
