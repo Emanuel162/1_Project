@@ -202,10 +202,7 @@ export function setupConnection(socket) {
             const rows = [];
             fs.createReadStream(file_path + file_name_recommendations)
                 .pipe(parse({delimiter: ',', columns: true}))
-                .on('data', (row) => {
-
-                    rows.push(mapRecommendationRow(row))
-                })
+                .on('data', (row) => rows.push(mapRecommendationRow(row)))
                 .on('end', () => resolve(rows))
                 .on('error', (err) => reject(err));
         });
@@ -238,9 +235,28 @@ export function setupConnection(socket) {
             const rows = [];
             fs.createReadStream(file_path + file_name_game_items)
                 .pipe(parse({delimiter: ',', columns: true}))
-                .on('data', (row) => rows.push(row))
+                .on('data', (row) => rows.push(mapGameItemsFile(row)))
                 .on('end', () => resolve(rows))
                 .on('error', (err) => reject(err));
         });
     };
+    const mapGameItemsFile = (row) => {
+
+        return {
+            minPlayers: parseInt(row.min_players),
+            maxPlayers: parseInt(row.max_players),
+            minPlayersRec: parseInt(row.min_players_rec),
+            maxPlayersRec: parseInt(row.max_players_rec),
+            minPlayersBest: parseInt(row.min_best_players_best),
+            maxPlayersBest: parseInt(row.max_best_players_best),
+            minAge: parseInt(row.minAge),
+            minTime: parseInt(row.min_time),
+            maxTime: parseInt(row.max_time),
+            numVotes: parseInt(row.num_votes),
+            avgRating: parseInt(row.avg_rating),
+            stddevRating: parseInt(row.stddev_rating),
+            bayesrating: parseInt(row.bayes_rating),
+            complexity: parseInt(row.complexity),
+        }
+    }
 }
