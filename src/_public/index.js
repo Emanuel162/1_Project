@@ -7,6 +7,7 @@ import {draw_lollipop} from './lollipop.js';
 import * as d3 from 'd3';
 import {LDAPipeline} from './preprocessingLDA.js';
 import {kMeansPipeline} from "./normalizeddata.js";
+import {draw_scatterplot_kmeans} from "./scatterplotKmeans.js";
 
 let hostname = window.location.hostname;
 let protocol = window.location.protocol;
@@ -158,6 +159,9 @@ const handleRealisticData = (payload) => {
 
     console.log("kMeans")
     console.log(kMeans)
+
+    draw_scatterplot_kmeans(kMeans)
+
 }
 
 socket.on('freshData', handleData);
@@ -178,7 +182,7 @@ let height = 0;
  * To much computational load will result in stuttering and reduced responsiveness!
  */
 let checkSize = setInterval(() => {
-    let container = d3.select('.visualizations');
+    let container = d3.select('.visualizations_project_1');
     let newWidth = parseInt(container.style('width'));
     let newHeight = parseInt(container.style('height'));
     if (newWidth !== width || newHeight !== height) {

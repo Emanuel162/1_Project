@@ -4,11 +4,8 @@ head,
 #root,
 #app,
 .svg_root {
-  padding: 0px;
-  margin: 0px;
   height: 100%;
   width: 100%;
-
   overflow: hidden;
 }
 
@@ -16,7 +13,7 @@ head,
   display: grid;
   grid-template-columns: 300px auto;
   grid-template-rows: 100px auto;
-  grid-template-areas: "banner banner" "sidepanel visualizations";
+  grid-template-areas: "banner banner" "sidepanel visualizations_project_2" "sidepanel visualizations_project_1";
 }
 
 .banner {
@@ -36,13 +33,17 @@ head,
   padding: 20px;
 }
 
-.visualizations {
-  grid-area: visualizations;
+.visualizations_project_1 {
+  grid-area: visualizations_project_1;
 
   display: grid;
   grid-template-columns: auto;
   grid-template-rows: auto;
   grid-template-areas: "lollipop" "scatterplot";
+}
+
+.visualizations_project_2 {
+    grid-area: visualizations_project_2;
 }
 
 .barchart {
