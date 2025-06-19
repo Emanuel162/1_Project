@@ -1,7 +1,8 @@
-import { kMeans } from './kmeans.js';
+import {kMeans} from './kmeans.js';
+import * as druid from '@saehrimnir/druidjs';
 
-export function kMeansPipeline(gameItems, k = 3, n = 100) {
-    const rawData = gameItems.map(game => [
+function mapGameItemsFromObjectToListEntries(gameItems) {
+    return gameItems.map(game => [
         game.minPlayers,
         game.maxPlayers,
         game.minPlayersRec,
@@ -17,22 +18,52 @@ export function kMeansPipeline(gameItems, k = 3, n = 100) {
         game.bayesrating,
         game.complexity,
     ]);
+}
 
-    // should subtract one, otherwise we will get n+1 elements
-    const selectedRawData = rawData.slice(0, n-1);
+function computeClusterCenters(data, k) {
+
+    const clusterCenters = Array(k).fill(0).map(() => ({x: 0, y: 0, count: 0}));
+
+    data.forEach(point => {
+        const clusterIndex = point.clusterIndex;
+        clusterCenters[clusterIndex].x += point.dataPoints[0]
+        clusterCenters[clusterIndex].y += point.dataPoints[1]
+        clusterCenters[clusterIndex].count++;
+    })
+
+    return clusterCenters.map(center => ({
+        x: center.x / center.count,
+        y: center.y / center.count
+    }))
+}
+
+export function kMeansPipeline(gameItems, k = 3) {
+
+    const rawData = mapGameItemsFromObjectToListEntries(gameItems);
 
     const normalizedData = normalizeData(rawData);
     const contributionPerVariable = Array(normalizedData[0].length).fill(1 / normalizedData[0].length);
 
+    // Here we got for every data point a cluster number from 0 to k-1
     const result = kMeans(normalizedData, k, contributionPerVariable);
 
+    //Reduce data points from n dimensions to 2 dimensions
+    const reducedDataPoints = runPCAForVisualization(result.map(data => data.dataPoint), 2);
+
+    //Combine the reduced data points with the suiting centroidIndex
+    const reducedDataPointsWithClusterIndex = [];
+
+    for (let i = 0; i < result.length; i++) {
+        reducedDataPointsWithClusterIndex.push({
+            dataPoints: reducedDataPoints[i],
+            clusterIndex: result[i].centroidIndex
+        })
+    }
+
     return {
-        centroids: result.centroids,
-        clusterAssignments: gameItems.map((game, i) => ({
-            title: game.title,
-            cluster: result[i].dataPoint[result[i].centroidIndex]
-        }))
-    };
+        data: reducedDataPointsWithClusterIndex,
+        clusterCenters: computeClusterCenters(reducedDataPointsWithClusterIndex, k)
+    }
 }
 
 function normalizeData(data) {
@@ -42,7 +73,7 @@ function normalizeData(data) {
 
     for (let row of data) {
         for (let i = 0; i < numFeatures; i++) {
-            if (row[i] < mins[i]) mins[i] = row[i];
+            if (row[i] != null && row[i] < mins[i]) mins[i] = row[i];
             if (row[i] > maxs[i]) maxs[i] = row[i];
         }
     }
@@ -52,11 +83,8 @@ function normalizeData(data) {
     );
 }
 
-
-import * as druid from '@saehrimnir/druidjs';
-
-export function runPCAForVisualization(normalizedData, dimensions = 2) {
+function runPCAForVisualization(normalizedData, dimensions = 2) {
     const matrix = druid.Matrix.from(normalizedData);
-    const pca = new druid.PCA(matrix, { d: dimensions });
-    return pca.transform().to2dArray(); 
+    const pca = new druid.PCA(matrix, {d: dimensions});
+    return pca.transform().to2dArray;
 }

@@ -139,7 +139,23 @@ const handleRealisticData = (payload) => {
     console.log("payload");
     console.log(payload);
 
-    const kMeans = kMeansPipeline(payload.data.gameItems, 2,2);
+    let kMeans;
+    let clusterCentersAreCorrect = true
+
+    // It can happen that a cluster can't be computed due to division by zero (i guess)
+    // Then we just compute kMeans again, because we use the randomness from kMeans to get different clusters
+    do {
+        kMeans = kMeansPipeline(payload.data.gameItems, 3)
+
+        clusterCentersAreCorrect = true;
+        kMeans.clusterCenters.forEach(cluster => {
+            if(isNaN(cluster.x) || isNaN(cluster.y)) {
+                clusterCentersAreCorrect = false;
+            }
+        })
+
+    } while(!clusterCentersAreCorrect);
+
     console.log("kMeans")
     console.log(kMeans)
 }
