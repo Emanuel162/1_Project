@@ -66,7 +66,20 @@ export function draw_scatterplot_kmeans(kmeans) {
         .attr('r', 5)
         .attr('fill', (d) => color(d.clusterIndex))
         .attr('cx', (d) => margin.left + xScale(d.dataPoints[0]))
-        .attr('cy', (d) => yScale(d.dataPoints[1]) + margin.top);
+        .attr('cy', (d) => yScale(d.dataPoints[1]) + margin.top)
+        .on("mouseover", function (event, d) {
+            d3.select("body")
+                .append("div")
+                .attr("class", "tooltip")
+                .html(`Location: (${d.dataPoints[0].toFixed(4)}/${d.dataPoints[1].toFixed(4)})<br>Cluster: ${d.clusterIndex}`)
+                .style("left", (event.pageX + 10) + "px")
+                .style("top", (event.pageY - 20) + "px");
+            d3.select(this).attr("r", 7);
+        })
+        .on("mouseout", function () {
+            d3.selectAll(".tooltip").remove();
+            d3.select(this).attr("r", 5);
+        });
 
     scatterplot_kmeans_circle.exit().remove();
 
@@ -79,7 +92,20 @@ export function draw_scatterplot_kmeans(kmeans) {
         .attr('r', 9)
         .attr('fill', (d, i) => color(i))
         .attr('cx', (d) => margin.left + xScale(d.x))
-        .attr('cy', (d) => yScale(d.y) + margin.top);
+        .attr('cy', (d) => yScale(d.y) + margin.top)
+        .on("mouseover", function (event, d) {
+            d3.select("body")
+                .append("div")
+                .attr("class", "tooltip")
+                .html(`Location: (${d.x.toFixed(4)}/${d.y.toFixed(4)})<br>Number of Elements: ${d.counter}`)
+                .style("left", (event.pageX + 10) + "px")
+                .style("top", (event.pageY - 20) + "px");
+            d3.select(this).attr("r", 9);
+        })
+        .on("mouseout", function () {
+            d3.selectAll(".tooltip").remove();
+            d3.select(this).attr("r", 5);
+        });
 
     scatterplot_kmeans_cluster_circle.exit().remove();
 

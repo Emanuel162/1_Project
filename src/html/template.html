@@ -21,30 +21,26 @@
                 name="max_weight"
                 placeholder="Max. weight..."
         />
-        <div style="padding-bottom: 20px;">
-            <!-- Buttons to call our visualizations -->
-            <button id="load_data_button" class="button">Load Lollipop</button>
-            <button id="load_LDA_button" class="button">Load LDA</button>
-            <button id="load_realistic_data_button" class="button">Load realistic data</button>
-        </div>
+        <!-- Buttons to call our visualizations -->
+        <button id="load_data_button" class="button">Load Lollipop</button>
+        <button id="load_LDA_button" class="button">Load LDA</button>
+
         <!-- Parameters of the LDA algorithm -->
-        <div style="padding-bottom: 20px;">
-            <label for="number_of_dims">Number of dimensions</label>
-            <input
-                    type="text"
-                    id="number_of_dims"
-                    value="2"
-                    name="max_weight"
-                    placeholder="Number of dimensions..."
-            />
-        </div>
-        <div style="padding-bottom: 20px;">
-            <label for="classes_options">Option for class selection</label>
-            <select name="classes_options" id="classes_options">
-                <option value="ratings">Rating</option>
-                <option value="year">Year</option>
-            </select>
-        </div>
+        <label for="number_of_dims">Number of dimensions</label>
+        <input
+                type="text"
+                id="number_of_dims"
+                value="2"
+                name="max_weight"
+                placeholder="Number of dimensions..."
+        />
+
+        <label for="classes_options">Option for class selection</label>
+        <select name="classes_options" id="classes_options">
+            <option value="ratings">Rating</option>
+            <option value="year">Year</option>
+        </select>
+
         <fieldset>
             <legend>Choose fields for LDA algorithm</legend>
 
@@ -74,6 +70,17 @@
             <input class="class_checkbox" type="checkbox" id="check_year" name="check_year" value="year"/>
             <label for="check_year" id="label_year">Year</label><br>
         </fieldset>
+
+        <button id="load_realistic_data_button" class="button">Load kMeans data</button>
+
+        <label for="number_of_k">Number of K for kMeans</label>
+        <input
+                type="text"
+                id="number_of_k"
+                value="2"
+                name="max_weight"
+                placeholder="Number of k..."
+        />
     </div>
     <div class="visualizations_project_2">
         <svg class="svg_root" id="scatterplot_kmeans_svg">

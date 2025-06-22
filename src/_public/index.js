@@ -137,28 +137,38 @@ const handleBoardgamesLDAData = (payload) => {
 };
 
 const handleRealisticData = (payload) => {
-    console.log("payload");
-    console.log(payload);
 
     let kMeans;
     let clusterCentersAreCorrect = true
+    const k = parseInt(document.getElementById('number_of_k').value)
+    let numberOfRetrys = 0;
 
     // It can happen that a cluster can't be computed due to division by zero (i guess)
     // Then we just compute kMeans again, because we use the randomness from kMeans to get different clusters
+    // If there are too many retrys we also cancel the computation
     do {
-        kMeans = kMeansPipeline(payload.data.gameItems, 3)
-
+        kMeans = kMeansPipeline(payload.data.gameItems, k)
         clusterCentersAreCorrect = true;
         kMeans.clusterCenters.forEach(cluster => {
-            if(isNaN(cluster.x) || isNaN(cluster.y)) {
+            if (isNaN(cluster.x) || isNaN(cluster.y)) {
                 clusterCentersAreCorrect = false;
             }
         })
+        numberOfRetrys += 1;
 
-    } while(!clusterCentersAreCorrect);
+    } while (!clusterCentersAreCorrect && numberOfRetrys < 10);
 
-    console.log("kMeans")
-    console.log(kMeans)
+    const div = document.getElementsByClassName('visualizations_project_2')[0]
+    if (numberOfRetrys >= 10) {
+        const p = document.createElement('p');
+        p.id = "too_many_retrys"
+        p.innerText = "There are too many retrys for the cluster computation for k = " + k + ". Computation is stopped. Please choose a smaller k.";
+        div.appendChild(p);
+        return;
+    }
+    if(div.children.namedItem('too_many_retrys')) {
+        div.removeChild(div.children.namedItem('too_many_retrys'));
+    }
 
     draw_scatterplot_kmeans(kMeans)
 

@@ -33,7 +33,8 @@ function computeClusterCenters(data, k) {
 
     return clusterCenters.map(center => ({
         x: center.x / center.count,
-        y: center.y / center.count
+        y: center.y / center.count,
+        counter: center.count
     }))
 }
 
