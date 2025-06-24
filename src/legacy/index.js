@@ -1,14 +1,13 @@
 import io from 'socket.io-client';
 import './app.css';
-import { openTab, printSavedData } from './tabFunction.js'
-import { configs } from '../_server/static/configs.js';
-import { draw_barchart } from './barchart.js';
-import { draw_scatterplot } from './scatterplot.js';
-import { draw_lollipop } from './lollipop.js';
+import {configs} from '../_server/static/configs.js';
+import {draw_barchart} from './barchart.js';
+import {draw_scatterplot} from './scatterplot.js';
+import {draw_lollipop} from './lollipop.js';
 import * as d3 from 'd3';
-import { LDAPipeline } from './preprocessingLDA.js';
-import { kMeansPipeline } from "./normalizeddata.js";
-import { draw_scatterplot_kmeans } from "./scatterplotKmeans.js";
+import {LDAPipeline} from './preprocessingLDA.js';
+import {kMeansPipeline} from "./normalizeddata.js";
+import {draw_scatterplot_kmeans} from "./scatterplotKmeans.js";
 
 let hostname = window.location.hostname;
 let protocol = window.location.protocol;
@@ -45,40 +44,8 @@ document.getElementById('load_data_button').onclick = () => {
     } else {
         max_weight = Infinity;
     }
-    requestData('getData', { max_weight });
+    requestData('getData', {max_weight});
 };
-
-var plot_history = [0, 0, 0, 0, 0];
-var history_count = -1;
-
-document.getElementById("action_button").onclick = () => {
-
-    history_count = history_count + 1;
-
-    openTab(document.getElementById(`history_${history_count%5}_button`),`history_${history_count%5}`,"history", plot_history);
-
-    let max_weight = document.getElementById('max_weight').value;
-    if (!isNaN(max_weight)) {
-        max_weight = parseFloat(max_weight);
-    } else {
-        max_weight = Infinity;
-    }
-    requestData('getData', { max_weight });
-
-    requestData('getLDAData');
-    requestData('getRealisticData');
-
-    let active_tab = history_count % 5;
-
-    plot_history[active_tab] = {
-        "number_of_dims": document.getElementById('number_of_dims').value,
-        "classes_option": document.getElementById('classes_options').value,
-        "field_selection": Array.from(document.querySelectorAll('input[class=class_checkbox]:checked')).map((checkbox) => checkbox.getAttribute("value")).join(', '),
-        "number_of_k": document.getElementById('number_of_k').value
-    };
-
-    printSavedData(active_tab, plot_history);
-}
 
 //Button for Task 1
 document.getElementById('load_LDA_button').onclick = () => {
@@ -151,10 +118,8 @@ const handleBoardgamesData = (payload) => {
     console.log(`Fresh boardgame data from Webserver:`);
     console.log(payload);
 
-    let active_tab = history_count % 5;
-
     data.lollipop = mapData(payload.preprocessedData);
-    draw_lollipop(data.lollipop, active_tab);
+    draw_lollipop(data.lollipop);
 };
 
 const handleBoardgamesLDAData = (payload) => {
@@ -167,10 +132,8 @@ const handleBoardgamesLDAData = (payload) => {
     field_selection = field_selection.map((checkbox) => checkbox.getAttribute("value"));
     console.log(field_selection);
 
-    let active_tab = history_count % 5;
-
     let plot_data = LDAPipeline(payload.data, parseInt(number_of_dims), classes_option, field_selection);
-    draw_scatterplot(plot_data, active_tab);
+    draw_scatterplot(plot_data);
 };
 
 const handleRealisticData = (payload) => {
@@ -195,23 +158,19 @@ const handleRealisticData = (payload) => {
 
     } while (!clusterCentersAreCorrect && numberOfRetrys < 10);
 
-    let active_tab = history_count % 5;
-
-    const div = document.getElementsByClassName('kmeans_div')[active_tab]
-    console.log(div)
+    const div = document.getElementsByClassName('visualizations_project_2')[0]
     if (numberOfRetrys >= 10) {
         const p = document.createElement('p');
         p.id = "too_many_retrys"
         p.innerText = "There are too many retrys for the cluster computation for k = " + k + ". Computation is stopped. Please choose a smaller k.";
         div.appendChild(p);
-
         return;
     }
-    if (div.children.namedItem('too_many_retrys')) {
+    if(div.children.namedItem('too_many_retrys')) {
         div.removeChild(div.children.namedItem('too_many_retrys'));
     }
 
-    draw_scatterplot_kmeans(kMeans, active_tab)
+    draw_scatterplot_kmeans(kMeans)
 
 }
 
@@ -254,62 +213,3 @@ const mapData = (data) => {
         };
     });
 };
-
-document.getElementById('sidepanel_button').onclick = () => {
-
-    let root = document.getElementById('root');
-    let sidepanel = document.getElementById('sidepanel');
-    let button = document.getElementById('sidepanel_button');
-
-    if (root.classList.contains("hidden")) {
-        button.innerText = "Hide";
-        sidepanel.style.display = "inline";
-        root.classList.add("shown");
-        root.classList.remove("hidden");
-        console.log("show");
-    }
-    else {
-        button.innerText = "Show";
-        sidepanel.style.display = "none";
-        root.classList.remove("shown");
-        root.classList.add("hidden");
-        console.log("hide");
-    }
-}
-
-document.getElementById("read_sidepanel_button").onclick = () => {
-    openTab(document.getElementById("read_sidepanel_button"), 'read_sidepanel', 'sidepanel');
-};
-
-document.getElementById("write_sidepanel_button").onclick = () => {
-    openTab(document.getElementById("write_sidepanel_button"), 'write_sidepanel', 'sidepanel');
-};
-
-document.getElementById("history_0_button").onclick = () => {
-    console.log("open tab 0")
-    openTab(document.getElementById("history_0_button"), 'history_0', 'history', plot_history)
-};
-
-document.getElementById("history_1_button").onclick = () => {
-    openTab(document.getElementById("history_1_button"), 'history_1', 'history', plot_history)
-};
-
-document.getElementById("history_2_button").onclick = () => {
-    openTab(document.getElementById("history_2_button"), 'history_2', 'history', plot_history)
-};
-
-document.getElementById("history_3_button").onclick = () => {
-    openTab(document.getElementById("history_3_button"), 'history_3', 'history', plot_history)
-};
-
-document.getElementById("history_4_button").onclick = () => {
-    openTab(document.getElementById("history_4_button"), 'history_4', 'history', plot_history)
-};
-
-var svg_divs = document.getElementsByClassName("svg_root");
-for (var i = 0; i < svg_divs.length; i++) {
-    var div = svg_divs[i];
-    div.onclick = () => {
-        alert(div.parentElement.id);
-    };
-}

@@ -4,59 +4,104 @@ head,
 #root,
 #app,
 .svg_root {
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
+  padding: 0px;
+  margin: 0px;
+  height: 100%;
+  width: 100%;
+
+  overflow: hidden;
 }
 
-#root {
-    display: grid;
-    grid-template-columns: 300px auto;
-    grid-template-rows: 100px auto;
-    grid-template-areas: "banner banner" "sidepanel visualizations_project_2" "sidepanel visualizations_project_1";
+/* The root element */
+
+#root.hidden {
+    display: inline;
 }
 
-.banner {
-    grid-area: banner;
-    background: rgb(120, 150, 196);
-
-    text-align: center;
-    line-height: 100px;
-    font-size: 40px;
-    font-weight: bold;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+#root.shown {
+  display: grid;
+  grid-template-columns: 350px auto;
+  grid-template-rows: 100px auto;
+  grid-template-areas: "header header" "sidepanel main_div" "sidepanel main_div";
 }
+
+/* Elements inside root */
+/* The header element and elements inside it */
+
+.header {
+  grid-area: header;
+  background: rgb(120, 150, 196);
+
+  display: grid;
+  grid-template-columns: 350px auto;
+  grid-template-areas: "sidepanel_button title_banner";
+
+  text-align: center;
+  line-height: 100px;
+  font-size: 40px;
+  font-weight: bold;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+#sidepanel_button {
+  grid-area: sidepanel_button;
+  text-align: center;
+  width: 50%;
+  font-size: 0.6em;
+}
+
+/* The sidepanel element and elements inside it */
 
 .sidepanel {
-    grid-area: sidepanel;
-    background: rgb(202, 202, 202);
-    padding: 20px;
+  grid-area: sidepanel;
+  background: rgb(202, 202, 202);
+  padding: 20px;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
-.visualizations_project_1 {
-    grid-area: visualizations_project_1;
+#read_sidepanel {
+    word-wrap: break-word;
+    background-color: #eee;
+}
+
+/* The main_div element and elements inside it */
+
+.main_div {
+    grid-area: main_div;
 
     display: grid;
-    grid-template-columns: auto;
-    grid-template-rows: auto;
-    grid-template-areas: "lollipop" "scatterplot";
+    grid-template-rows: 50px auto;
+    grid-template-areas: "history" "visualizations";
 }
 
-.visualizations_project_2 {
-    grid-area: visualizations_project_2;
+.history {
+    grid-area: history;
 }
 
-.barchart {
-    grid-area: barchart;
+/* The visualization element and elements inside it */
+
+.visualizations {
+  grid-area: visualizations;
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto;
+  grid-template-areas: "lollipop scatterplot" "k_means k_means";
 }
 
-.scatterplot {
-    grid-area: scatterplot;
+.k_means_div {
+  grid-area: k_means;
 }
 
-.lollipop {
-    grid-area: lollipop;
+.lollipop_div {
+  grid-area: lollipop;
 }
+
+.scatterplot_div {
+  grid-area: scatterplot;
+}
+
+/* The button styles */
 
 .button {
     /* 300px: width if the sidepanel defined in the grid-template for #root */
@@ -74,6 +119,77 @@ head,
 .button:hover {
     background: rgb(180, 180, 180);
 }
+
+/* The tab styles */
+
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+.tablinks_sidepanel {
+    width: 50%;
+}
+
+.tablinks_history {
+    width: 20%;
+}
+
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+}
+
+.tab button:hover {
+  background-color: #ddd;
+}
+
+.tab button.active {
+  background-color: #ccc;
+}
+
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+
+.tabcontent_history {
+    width: 100%;
+    overflow: scroll;
+
+}
+
+/* The visualization element and elements inside it */
+
+.visualizations {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto;
+  grid-template-areas: "lollipop scatterplot" "k_means k_means";
+}
+
+.k_means_div {
+  grid-area: k_means;
+}
+
+.lollipop_div {
+  grid-area: lollipop;
+}
+
+.scatterplot_div {
+  grid-area: scatterplot;
+}
+
+/* The tooltip and input elements */
 
 input[type=text], select {
     width: 100%;

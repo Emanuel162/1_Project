@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 
-const draw_lollipop = (data, active_tab = 0) => {
+const draw_lollipop = (data) => {
   console.log('draw lollipop');
   console.log(data);
   data.sort((a, b) => b.rating - a.rating);
@@ -18,11 +18,11 @@ const draw_lollipop = (data, active_tab = 0) => {
   /**
    * Selection of svg and groups to be drawn on.
    */
-  let svg = d3.select('#lollipop_svg' + `_${active_tab}`);
+  let svg = d3.select('#lollipop_svg');
 
-  let g_lollipop = d3.select('#g_lollipop' + `_${active_tab}`);
-  let g_x_axis_lollipop = d3.select('#g_x_axis_lollipop' + `_${active_tab}`);
-  let g_y_axis_lollipop = d3.select('#g_y_axis_lollipop' + `_${active_tab}`);
+  let g_lollipop = d3.select('#g_lollipop');
+  let g_x_axis_lollipop = d3.select('#g_x_axis_lollipop');
+  let g_y_axis_lollipop = d3.select('#g_y_axis_lollipop');
 
   /**
    * Getting the current width/height of the whole drawing pane.

@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 
-export function draw_scatterplot(data, active_tab = 0, relative_size = true) {
+export function draw_scatterplot(data, relative_size = true) {
   console.log('draw scatterplot');
   let plot_data = data.lda;
   console.log(plot_data);
@@ -33,10 +33,10 @@ export function draw_scatterplot(data, active_tab = 0, relative_size = true) {
   /**
    * Selection of svg and groups to be drawn on.
    */
-  let svg = d3.select('#scatterplot_svg' + `_${active_tab}`);
-  let g_scatterplot = d3.select('#g_scatterplot' + `_${active_tab}`);
-  let g_x_axis_scatterplot = d3.select('#g_x_axis_scatterplot' + `_${active_tab}`);
-  let g_y_axis_scatterplot = d3.select('#g_y_axis_scatterplot' + `_${active_tab}`);
+  let svg = d3.select('#scatterplot_svg');
+  let g_scatterplot = d3.select('#g_scatterplot');
+  let g_x_axis_scatterplot = d3.select('#g_x_axis_scatterplot');
+  let g_y_axis_scatterplot = d3.select('#g_y_axis_scatterplot');
 
   svg.on('click', function () {
     if (relative_size) {

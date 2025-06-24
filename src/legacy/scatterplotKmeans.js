@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 
 
-export function draw_scatterplot_kmeans(kmeans, active_tab = 0) {
+export function draw_scatterplot_kmeans(kmeans) {
     console.log('draw scatterplot for kmeans');
     console.log(kmeans)
 
@@ -20,12 +20,10 @@ export function draw_scatterplot_kmeans(kmeans, active_tab = 0) {
     /**
      * Selection of svg and groups to be drawn on.
      */
-    let svg = d3.select(`#scatterplot_kmeans_svg_${active_tab}`);
-    let g_scatterplot_kmeans = d3.select(`#g_scatterplot_kmeans_${active_tab}`);
-    let g_x_axis_scatterplot_kmeans = d3.select(`#g_x_axis_scatterplot_kmeans_${active_tab}`);
-    let g_y_axis_scatterplot_kmeans = d3.select(`#g_y_axis_scatterplot_kmeans_${active_tab}`);
-
-    
+    let svg = d3.select('#scatterplot_kmeans_svg');
+    let g_scatterplot_kmeans = d3.select('#g_scatterplot_kmeans');
+    let g_x_axis_scatterplot_kmeans = d3.select('#g_x_axis_scatterplot_kmeans');
+    let g_y_axis_scatterplot_kmeans = d3.select('#g_y_axis_scatterplot_kmeans');
 
     /**
      * Getting the current width/height of the whole drawing pane.
