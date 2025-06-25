@@ -281,6 +281,7 @@ document.getElementById('sidepanel_button').onclick = () => {
         sidepanel.style.display = "inline";
         root.classList.add("shown");
         root.classList.remove("hidden");
+        root.classList.remove("scrollable");
         console.log("show");
     }
     else {
@@ -288,6 +289,7 @@ document.getElementById('sidepanel_button').onclick = () => {
         sidepanel.style.display = "none";
         root.classList.remove("shown");
         root.classList.add("hidden");
+        root.classList.add("scrollable");
         console.log("hide");
     }
 }

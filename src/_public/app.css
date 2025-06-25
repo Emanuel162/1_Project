@@ -12,7 +12,16 @@ head,
   overflow: hidden;
 }
 
+.svg_root {
+  overflow: visible;
+  overflow-y: visible; 
+}
 /* The root element */
+
+#root {
+  height: 100vh;
+  width: 100vw;
+}
 
 #root.hidden {
     display: inline;
@@ -93,13 +102,6 @@ legend {
 
 /* The visualization element and elements inside it */
 
-.visualizations {
-  grid-area: visualizations;
-  display: grid;
-  grid-template-columns: auto auto;
-  grid-template-rows: auto auto;
-  grid-template-areas: "lollipop scatterplot" "k_means k_means";
-}
 
 .k_means_div {
   grid-area: k_means;
@@ -177,7 +179,6 @@ legend {
 .tabcontent_history {
   grid-area: none;
   width: 100%;
-  overflow-x: scroll;
 }
 
 /* The visualization element and elements inside it */
@@ -194,6 +195,7 @@ legend {
 **/
 
 .visualizations {
+  overflow-x: hidden;
   width: 100%;
   height: 100%;
   display: grid;
@@ -203,8 +205,9 @@ legend {
 }
 
 .visualizations_history {
-  width: 100%;
-  height: 100%;
+  padding: 20px;
+  width: 85%;
+  height: 80%;
   display: grid;
   grid-template-columns: 50% 50%;
   grid-template-rows: 50% 50%;
@@ -213,6 +216,7 @@ legend {
 
 .graph_div {
   height: auto;
+  margin: 20px;
 }
 
 .kmeans_div {
