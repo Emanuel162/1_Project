@@ -43,7 +43,7 @@ export function draw_scatterplot_kmeans(kmeans, active_tab = 0) {
      */
     const xScale = d3
         .scaleLinear()
-        .domain([d3.min(data.map((d) => d.dataPoints[1])), d3.max(data.map((d) => d.dataPoints[0]))])
+        .domain([d3.min(data.map((d) => d.dataPoints[0])), d3.max(data.map((d) => d.dataPoints[0]))])
         .range([0, width - margin.left - margin.right]);
 
     /**
