@@ -3,22 +3,14 @@ import * as d3 from 'd3';
 export function draw_scatterplot(data, active_tab = 0, relative_size = true) {
   console.log('draw scatterplot');
   let plot_data = data.lda;
-  console.log(plot_data);
-  console.log(data.labels);
 
   let above_mean_dots = [];
-  let below_mean_dots = [];
 
   for (let i = 0; i < data.labels.length; i++) {
-    if (data.labels[i] == 'Above Mean') {
+    if (data.labels[i] === 'Above Mean') {
       above_mean_dots.push(data.lda[i]);
-    } else {
-      below_mean_dots.push(data.lda[i]);
     }
   }
-
-  console.log(above_mean_dots);
-  console.log(below_mean_dots);
 
   /**
    * Margins of the visualization.

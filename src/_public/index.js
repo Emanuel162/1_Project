@@ -28,7 +28,7 @@ socket.on('disconnect', () => {
  * @param {*} parameters
  */
 let requestData = (socketName, parameters) => {
-    console.log(`requesting data from webserver (every 2sec)`);
+    console.log(`requesting data from webserver (every 2sec) for socket: ` + socketName);
 
     socket.emit(socketName, {
         parameters,
@@ -76,7 +76,8 @@ document.getElementById("action_button").onclick = () => {
         requestData('getLDAData');
     }
     if (if_kmeans) {
-        requestData('getRealisticData');
+        let topXSelection = parseInt(document.getElementById('classes_options_top_x').value);
+        requestData('getRealisticData', {topXSelection});
     }
 
     let active_tab = history_count % 5;
@@ -85,7 +86,8 @@ document.getElementById("action_button").onclick = () => {
         "number_of_dims": document.getElementById('number_of_dims').value,
         "classes_option": document.getElementById('classes_options').value,
         "field_selection": Array.from(document.querySelectorAll('input[class=class_checkbox]:checked')).map((checkbox) => checkbox.getAttribute("value")).join(', '),
-        "number_of_k": document.getElementById('number_of_k').value
+        "number_of_k": document.getElementById('number_of_k').value,
+        "classes_options_top_x": document.getElementById('classes_options_top_x').value
     };
 
     printSavedData(active_tab, plot_history);
@@ -98,7 +100,9 @@ document.getElementById('load_LDA_button').onclick = () => {
 
 //Button for Task 2
 document.getElementById('load_realistic_data_button').onclick = () => {
-    requestData('getRealisticData');
+
+    let topXSelection = parseInt(document.getElementById('classes_options_top_x').value);
+    requestData('getRealisticData', {topXSelection});
 };
 
 document.getElementById('classes_options').onchange = () => {

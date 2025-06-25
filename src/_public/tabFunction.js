@@ -51,6 +51,7 @@ export function printSavedData(number, plot_history) {
         <b>Number of dimensions:</b> ${plot_history[number]["number_of_dims"]}<br>
         <b>Class option:</b> ${plot_history[number]["classes_option"]}<br>
         <b>Selected fields:</b> ${plot_history[number]["field_selection"]}<br>
+        <b>Top X Selection:</b> ${plot_history[number]["classes_options_top_x"]}<br>
         <b>Number of clusters:</b> ${plot_history[number]["number_of_k"]}`;
     }
 }

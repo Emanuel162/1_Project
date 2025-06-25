@@ -4,7 +4,7 @@ import * as fs from 'fs';
 import {print_clientConnected, print_clientDisconnected,} from './static/utils.js';
 import {calc_bmi, is_below_max_weight, parse_numbers,} from './preprocessing.js';
 import {getExampleLDA} from './druidExample.js';
-import {LDAPipeline, preprocessLDA} from '../_public/preprocessingLDA.js';
+import {preprocessLDA} from '../_public/preprocessingLDA.js';
 
 const file_path = 'data/';
 const example_file_name = 'example_data.csv';
@@ -99,17 +99,7 @@ export function setupConnection(socket) {
         readStream.on('end', () => {
             try {
                 const parsedData = JSON.parse(jsonData);
-                console.log('First Parsed Data Item: ', parsedData.boardgames[0]);
-
                 const preprocessedLDA = preprocessLDA(parsedData.boardgames);
-
-                const lda = LDAPipeline(parsedData.boardgames, 2);
-                console.log(lda);
-
-                console.log(
-                    'Result of first ten entry of preprocessed LDA:',
-                    preprocessedLDA.slice(0, 10)
-                );
 
                 socket.emit('boardgamesData', {
                     timestamp: new Date().getTime(),
@@ -148,14 +138,7 @@ export function setupConnection(socket) {
         readStream.on('end', () => {
             try {
                 const parsedData = JSON.parse(jsonData);
-                console.log('First Parsed Data Item: ', parsedData.boardgames[0]);
-
                 const preprocessedLDA = preprocessLDA(parsedData.boardgames);
-
-                console.log(
-                    'Result of first ten entry of preprocessed LDA:',
-                    preprocessedLDA.slice(0, 10)
-                );
 
                 socket.emit('boardgamesLDAData', {
                     timestamp: new Date().getTime(),
@@ -176,11 +159,20 @@ export function setupConnection(socket) {
     });
 
     // Task 2
-    socket.on('getRealisticData', async () => {
-        console.log('getRealisticData socket on');
+    socket.on('getRealisticData', async (obj) => {
+        console.log(`getRealisticData socket on with properties ${JSON.stringify(obj)}...`);
+
+        const topXSelection = obj.parameters.topXSelection
 
         try {
-            const [recommendations, gameItems] = await Promise.all([readRecommendationsFile(), readGameItemsFile()]);
+            let [recommendations, gameItems] = await Promise.all([readRecommendationsFile(topXSelection), readGameItemsFile(topXSelection)]);
+
+            //Feature idea: change sorting algorithm from only avgRating to a mixed sorting algorithm
+            //const maxAvgRatingGameItems = Math.max(gameItems.map(g => g.avgRating))
+            //const maxNumVotesGameItems = Math.max(gameItems.map(g => g.numVotes))
+
+            gameItems = gameItems.sort((a, b) => a.avgRating > b.avgRating).slice(0, topXSelection);
+
             socket.emit('realisticData', {
                 timestamp: new Date().getTime(),
                 data: {
@@ -243,20 +235,20 @@ export function setupConnection(socket) {
     const mapGameItemsFile = (row) => {
 
         return {
-            minPlayers: parseInt(row.min_players),
-            maxPlayers: parseInt(row.max_players),
-            minPlayersRec: parseInt(row.min_players_rec),
-            maxPlayersRec: parseInt(row.max_players_rec),
-            minPlayersBest: parseInt(row.min_players_best),
-            maxPlayersBest: parseInt(row.max_players_best),
-            minAge: parseInt(row.min_age),
-            minTime: parseInt(row.min_time),
-            maxTime: parseInt(row.max_time),
-            numVotes: parseInt(row.num_votes),
-            avgRating: parseInt(row.avg_rating),
-            stddevRating: parseInt(row.stddev_rating),
-            bayesrating: parseInt(row.bayes_rating),
-            complexity: parseInt(row.complexity),
+            minPlayers: parseFloat(row.min_players),
+            maxPlayers: parseFloat(row.max_players),
+            minPlayersRec: parseFloat(row.min_players_rec),
+            maxPlayersRec: parseFloat(row.max_players_rec),
+            minPlayersBest: parseFloat(row.min_players_best),
+            maxPlayersBest: parseFloat(row.max_players_best),
+            minAge: parseFloat(row.min_age),
+            minTime: parseFloat(row.min_time),
+            maxTime: parseFloat(row.max_time),
+            numVotes: parseFloat(row.num_votes),
+            avgRating: parseFloat(row.avg_rating),
+            stddevRating: parseFloat(row.stddev_rating),
+            bayesrating: parseFloat(row.bayes_rating),
+            complexity: parseFloat(row.complexity),
         }
     }
 }
