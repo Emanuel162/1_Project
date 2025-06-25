@@ -1,3 +1,5 @@
+import { active } from "d3";
+
 // Function to open a tab (and hide the others)
 export function openTab(this_tab, sideTabName, tab_category, plot_history = 0) {
 
@@ -14,6 +16,9 @@ export function openTab(this_tab, sideTabName, tab_category, plot_history = 0) {
     tabcontent = document.getElementsByClassName(content_class);
     for (i = 0; i < tabcontent.length; i++) {
         tabcontent[i].style.display = "none";
+        if (tab_category == "history") {
+            tabcontent[i].style.gridArea = "none";
+        }
     }
 
     // Get all elements with class="tablinks_//category//" and remove the class "active"
@@ -23,8 +28,16 @@ export function openTab(this_tab, sideTabName, tab_category, plot_history = 0) {
     }
 
     // Show the current tab, and add an "active" class to the button that opened the tab
-    document.getElementById(sideTabName).style.display = "block";
+    var activeTab = document.getElementById(sideTabName);
+    activeTab.style.display = "block";
     this_tab.className += " active";
+
+    if(tab_category == "history")
+    {
+        activeTab.style.height = "100%";
+        activeTab.style.width = "100%";
+        activeTab.style.gridArea = "active_tab";
+    }
 }
 
 export function printSavedData(number, plot_history) {

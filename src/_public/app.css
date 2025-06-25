@@ -65,6 +65,18 @@ head,
     background-color: #eee;
 }
 
+.section_title {
+  text-align: center;
+}
+
+fieldset {
+  background-color: #ccc;
+}
+
+legend {
+  font-weight: bold;
+}
+
 /* The main_div element and elements inside it */
 
 .main_div {
@@ -159,26 +171,53 @@ head,
   padding: 6px 12px;
   border: 1px solid #ccc;
   border-top: none;
+  width: 100%;
 }
 
 .tabcontent_history {
-    width: 100%;
-    overflow: scroll;
-
+  grid-area: none;
+  width: 100%;
+  overflow-x: scroll;
 }
 
 /* The visualization element and elements inside it */
 
+/**
 .visualizations {
   width: 100%;
   display: grid;
-  grid-template-columns: auto auto;
-  grid-template-rows: auto auto;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 50% 50%;
   grid-template-areas: "lollipop scatterplot" "k_means k_means";
 }
 
-.k_means_div {
+**/
+
+.visualizations {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: auto;
+  grid-template-areas: "active_tab";
+}
+
+.visualizations_history {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 50% 50%;
+  grid-template-areas: "lollipop scatterplot" "k_means k_means";
+}
+
+.graph_div {
+  height: auto;
+}
+
+.kmeans_div {
   grid-area: k_means;
+  width: 100%;
 }
 
 .lollipop_div {

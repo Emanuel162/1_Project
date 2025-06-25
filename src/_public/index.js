@@ -53,20 +53,31 @@ var history_count = -1;
 
 document.getElementById("action_button").onclick = () => {
 
+    let if_lollipop = document.getElementById('check_lollipop').checked;
+    let if_scatterplot = document.getElementById('check_scatterplot').checked;
+    let if_kmeans = document.getElementById('check_kmeans').checked;
+
+    console.log(if_kmeans, if_lollipop, if_scatterplot);
+
     history_count = history_count + 1;
 
     openTab(document.getElementById(`history_${history_count%5}_button`),`history_${history_count%5}`,"history", plot_history);
 
-    let max_weight = document.getElementById('max_weight').value;
-    if (!isNaN(max_weight)) {
-        max_weight = parseFloat(max_weight);
-    } else {
-        max_weight = Infinity;
+    if(if_lollipop) {
+        let max_weight = document.getElementById('max_weight').value;
+        if (!isNaN(max_weight)) {
+            max_weight = parseFloat(max_weight);
+        } else {
+            max_weight = Infinity;
+        }
+        requestData('getData', { max_weight });
     }
-    requestData('getData', { max_weight });
-
-    requestData('getLDAData');
-    requestData('getRealisticData');
+    if (if_scatterplot) {
+        requestData('getLDAData');
+    }
+    if (if_kmeans) {
+        requestData('getRealisticData');
+    }
 
     let active_tab = history_count % 5;
 

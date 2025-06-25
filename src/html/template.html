@@ -33,14 +33,29 @@
                 <label hidden for="max_weight">Filter for weight below ___ kg</label>
                 <input type="hidden" id="max_weight" value="120" name="max_weight" placeholder="Max. weight..." />
 
+                <button class="button" id="action_button">Visualize</button>
+
                 <!-- Buttons to call our visualizations -->
+                <fieldset>
+                    <legend>Choose visualizations to draw</legend>
+                    <input class="class_checkbox_vis" type="checkbox" id="check_kmeans"
+                        name="check_kmeans" value="kmeans" checked="true"/>
+                    <label for="check_kmeans">Draw K-means</label><br>
+                    <input class="class_checkbox_vis" type="checkbox" id="check_lollipop"
+                        name="check_lollipop" value="lollipop" checked="true"/>
+                    <label for="check_lollipop">Draw Lollipop</label><br>
+                    <input class="class_checkbox_vis" type="checkbox" id="check_scatterplot"
+                        name="check_scatterplot" value="scatterplot" checked="true"/>
+                    <label for="check_scatterplot">Draw Scatterplot</label>
+                </fieldset>
                 <div style="padding-bottom: 20px;">
-                    <button id="load_data_button" class="button">Load Lollipop</button>
-                    <button id="load_LDA_button" class="button">Load LDA</button>
-                    <button id="load_realistic_data_button" class="button">Load realistic data</button>
+                    <button hidden id="load_data_button" class="button">Load Lollipop</button>
+                    <button hidden id="load_LDA_button" class="button">Load LDA</button>
+                    <button hidden id="load_realistic_data_button" class="button">Load realistic data</button>
                 </div>
 
                 <!-- Parameters of the LDA algorithm -->
+                <h3 class="section_title">LDA</h3>
                 <div style="padding-bottom: 20px;">
                     <label for="number_of_dims">Number of dimensions</label>
                     <input type="text" id="number_of_dims" value="2" name="max_weight"
@@ -63,7 +78,7 @@
                     <label for="check_minplayers">Minplayers</label><br>
 
                     <input class="class_checkbox" checked="true" type="checkbox" id="check_minplaytime"
-                        name="check_minplaytime" value="minminplaytime" />
+                        name="check_minplaytime" value="minplaytime" />
                     <label for="check_minplaytime">Minplaytime</label><br>
 
                     <input class="class_checkbox" type="checkbox" id="check_maxplayers" name="check_maxplayers"
@@ -87,13 +102,14 @@
                 </fieldset>
 
 
-                <button id="load_realistic_data_button" class="button">Load kMeans data</button>
-
+                <button hidden id="load_realistic_data_button" class="button">Load kMeans data</button>
+                
+                <h3 class="section_title">k-Means</h3>
                 <label for="number_of_k">Number of K for kMeans</label>
                 <input type="text" id="number_of_k" value="2" name="max_weight" placeholder="Number of k..." />
 
                 <!-- This button should do all the work -->
-                <button class="button" id="action_button">Create a history</button>
+                
             </div>
         </div>
         <div hidden="true" class="visualizations_project_2">
@@ -145,22 +161,22 @@
             </div>
             <div class="visualizations">
                 <div id="history_0" class="tabcontent tabcontent_history">
-                    <div class="visualizations">
-                        <div class="kmeans_div" id="kmeans_div_0">
+                    <div class="visualizations_history">
+                        <div class="graph_div kmeans_div" id="kmeans_div_0">
                             <svg class="svg_root" id="scatterplot_kmeans_svg_0">
                                 <g id="g_x_axis_scatterplot_kmeans_0"></g>
                                 <g id="g_y_axis_scatterplot_kmeans_0"></g>
                                 <g id="g_scatterplot_kmeans_0"></g>
                             </svg>
                         </div>
-                        <div class="lollipop_div" id="lollipop_div_0">
+                        <div class="graph_div lollipop_div" id="lollipop_div_0">
                             <svg class="svg_root" id="lollipop_svg_0">
                                 <g id="g_x_axis_lollipop_0"></g>
                                 <g id="g_y_axis_lollipop_0"></g>
                                 <g id="g_lollipop_0"></g>
                             </svg>
                         </div>
-                        <div class="scatterplot_div" id="scatterplot_div_0">
+                        <div class="graph_div scatterplot_div" id="scatterplot_div_0">
                             <svg class="svg_root" id="scatterplot_svg_0">
                                 <g id="g_x_axis_scatterplot_0"></g>
                                 <g id="g_y_axis_scatterplot_0"></g>
@@ -170,22 +186,22 @@
                     </div>
                 </div>
                 <div id="history_1" class="tabcontent tabcontent_history">
-                    <div class="visualizations">
-                        <div class="kmeans_div" id="kmeans_div_1">
+                    <div class="visualizations_history">
+                        <div class="graph_div kmeans_div" id="kmeans_div_1">
                             <svg class="svg_root" id="scatterplot_kmeans_svg_1">
                                 <g id="g_x_axis_scatterplot_kmeans_1"></g>
                                 <g id="g_y_axis_scatterplot_kmeans_1"></g>
                                 <g id="g_scatterplot_kmeans_1"></g>
                             </svg>
                         </div>
-                        <div class="lollipop_div" id="lollipop_div_1">
+                        <div class="graph_div lollipop_div" id="lollipop_div_1">
                             <svg class="svg_root" id="lollipop_svg_1">
                                 <g id="g_x_axis_lollipop_1"></g>
                                 <g id="g_y_axis_lollipop_1"></g>
                                 <g id="g_lollipop_1"></g>
                             </svg>
                         </div>
-                        <div class="scatterplot_div" id="scatterplot_div_1">
+                        <div class="graph_div scatterplot_div" id="scatterplot_div_1">
                             <svg class="svg_root" id="scatterplot_svg_1">
                                 <g id="g_x_axis_scatterplot_1"></g>
                                 <g id="g_y_axis_scatterplot_1"></g>
@@ -195,22 +211,22 @@
                     </div>
                 </div>
                 <div id="history_2" class="tabcontent tabcontent_history">
-                    <div class="visualizations">
-                        <div class="kmeans_div" id="kmeans_div_2">
+                    <div class="visualizations_history">
+                        <div class="graph_div kmeans_div" id="kmeans_div_2">
                             <svg class="svg_root" id="scatterplot_kmeans_svg_2">
                                 <g id="g_x_axis_scatterplot_kmeans_2"></g>
                                 <g id="g_y_axis_scatterplot_kmeans_2"></g>
                                 <g id="g_scatterplot_kmeans_2"></g>
                             </svg>
                         </div>
-                        <div class="lollipop_div" id="lollipop_div_2">
+                        <div class="graph_div lollipop_div" id="lollipop_div_2">
                             <svg class="svg_root" id="lollipop_svg_2">
                                 <g id="g_x_axis_lollipop_2"></g>
                                 <g id="g_y_axis_lollipop_2"></g>
                                 <g id="g_lollipop_2"></g>
                             </svg>
                         </div>
-                        <div class="scatterplot_div" id="scatterplot_div_1">
+                        <div class="graph_div scatterplot_div" id="scatterplot_div_1">
                             <svg class="svg_root" id="scatterplot_svg_2">
                                 <g id="g_x_axis_scatterplot_2"></g>
                                 <g id="g_y_axis_scatterplot_2"></g>
@@ -220,22 +236,22 @@
                     </div>
                 </div>
                 <div id="history_3" class="tabcontent tabcontent_history">
-                    <div class="visualizations">
-                        <div class="kmeans_div" id="kmeans_div_3">
+                    <div class="visualizations_history">
+                        <div class="graph_div kmeans_div" id="kmeans_div_3">
                             <svg class="svg_root" id="scatterplot_kmeans_svg_3">
                                 <g id="g_x_axis_scatterplot_kmeans_3"></g>
                                 <g id="g_y_axis_scatterplot_kmeans_3"></g>
                                 <g id="g_scatterplot_kmeans_3"></g>
                             </svg>
                         </div>
-                        <div class="lollipop_div" id="lollipop_div_3">
+                        <div class="graph_div lollipop_div" id="lollipop_div_3">
                             <svg class="svg_root" id="lollipop_svg_3">
                                 <g id="g_x_axis_lollipop_3"></g>
                                 <g id="g_y_axis_lollipop_3"></g>
                                 <g id="g_lollipop_3"></g>
                             </svg>
                         </div>
-                        <div class="scatterplot_div" id="scatterplot_div_1">
+                        <div class="graph_div scatterplot_div" id="scatterplot_div_1">
                             <svg class="svg_root" id="scatterplot_svg_3">
                                 <g id="g_x_axis_scatterplot_3"></g>
                                 <g id="g_y_axis_scatterplot_3"></g>
@@ -245,22 +261,22 @@
                     </div>
                 </div>
                 <div id="history_4" class="tabcontent tabcontent_history">
-                    <div class="visualizations">
-                        <div class="kmeans_div" id="kmeans_div_4">
+                    <div class="visualizations_history">
+                        <div class="graph_div kmeans_div" id="kmeans_div_4">
                             <svg class="svg_root" id="scatterplot_kmeans_svg_4">
                                 <g id="g_x_axis_scatterplot_kmeans_4"></g>
                                 <g id="g_y_axis_scatterplot_kmeans_4"></g>
                                 <g id="g_scatterplot_kmeans_4"></g>
                             </svg>
                         </div>
-                        <div class="lollipop_div" id="lollipop_div_4">
+                        <div class="graph_div lollipop_div" id="lollipop_div_4">
                             <svg class="svg_root" id="lollipop_svg_4">
                                 <g id="g_x_axis_lollipop_4"></g>
                                 <g id="g_y_axis_lollipop_4"></g>
                                 <g id="g_lollipop_4"></g>
                             </svg>
                         </div>
-                        <div class="scatterplot_div" id="scatterplot_div_1">
+                        <div class="graph_div scatterplot_div" id="scatterplot_div_1">
                             <svg class="svg_root" id="scatterplot_svg_4">
                                 <g id="g_x_axis_scatterplot_4"></g>
                                 <g id="g_y_axis_scatterplot_4"></g>
