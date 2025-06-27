@@ -1,4 +1,5 @@
 import * as druid from '@saehrimnir/druidjs';
+import { normalizeData } from './normalizeddata.js';
 
 export function preprocessLDA(boardgames) {
   return boardgames.map((boardgame) => [
@@ -7,6 +8,19 @@ export function preprocessLDA(boardgames) {
     preprocessedRating(boardgame.rating),
   ]);
 }
+
+function getSelectedFieldsForKMeans(boardgame, list) {
+  let result = [];
+  let fields = ['minPlayers', 'maxPlayers',
+    'minPlayersRec', 'maxPlayersRec',
+    'minPlayersBest', 'maxPlayersBest',
+    'minAge', 'minTime', 'maxTime'];
+  fields.forEach((field) => {
+    if (list.includes(field)) { result.push(boardgame[field]); }
+  })
+  return result;
+}
+
 
 function getSelectedFields(boardgame, list) {
   let result = [];
@@ -74,7 +88,8 @@ function preprocessDataLDA(
   ]
 ) {
   return boardgames.map((boardgame) =>
-    getSelectedFields(boardgame, field_selection)
+    //getSelectedFields(boardgame, field_selection)
+    getSelectedFieldsForKMeans(boardgame, field_selection)
   );
 }
 
@@ -85,7 +100,6 @@ export function LDAPipeline(
   field_selection
 ) {
   let classes = [];
-
   // Step 1: Assign classes based on the option
   if (classes_option === 'ratings') {
     //Compute normalized ratings for each game
@@ -112,16 +126,33 @@ export function LDAPipeline(
     classes = normalizedYears.map((year) =>
       year >= mean ? 'Above Mean' : 'Below Mean'
     );
+  } else if (classes_option === 'avgRating') {
+    const normalizedRatings = data.map((game) => game.avgRating);
+    const mean =
+      normalizedRatings.reduce((a, b) => a + b, 0) / normalizedRatings.length;
+
+    classes = normalizedRatings.map((rating) =>
+      rating >= mean ? 'Above Mean' : 'Below Mean'
+    );
+
+  } else if (classes_option === 'complexity') {
+    const normalizedRatings = data.map((game) => game.complexity);
+    const mean =
+      normalizedRatings.reduce((a, b) => a + b, 0) / normalizedRatings.length;
+
+    classes = normalizedRatings.map((rating) =>
+      rating >= mean ? 'Above Mean' : 'Below Mean'
+    );
   } else {
     // For future options
   }
-
   // Step 2: Preprocess data into numerical feature matrix
   const processed = preprocessDataLDA(data, classes_option, field_selection);
   const X = druid.Matrix.from(processed);
 
   // Step 3: LDA
-  const reductionLDA = new druid.LDA(X, { labels: classes, d: number_of_dims }); // <-- THE NaN (in the result) OCCURS HERE
+  const reductionLDA = new druid.LDA(X, { labels: classes, d: number_of_dims });
+
 
   return {
     lda: reductionLDA.transform().to2dArray,

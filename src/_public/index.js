@@ -197,9 +197,11 @@ const handleBoardgamesLDAData = (payload) => {
     field_selection = field_selection.map((checkbox) => checkbox.getAttribute("value"));
     console.log(field_selection);
 
+    let data = payload.data.gameItems;
+
     let active_tab = history_count % 5;
 
-    let plot_data = LDAPipeline(payload.data, parseInt(number_of_dims), classes_option, field_selection);
+    let plot_data = LDAPipeline(data, parseInt(number_of_dims), classes_option, field_selection);
     draw_scatterplot(plot_data, active_tab);
 };
 
@@ -248,13 +250,13 @@ const handleRealisticData = (payload) => {
 //socket.on('freshData', handleData);
 
 socket.on('boardgamesData', handleBoardgamesData);
-socket.on('boardgamesLDAData', handleBoardgamesLDAData);
+//socket.on('boardgamesLDAData', handleBoardgamesLDAData);
 
 // Using new data
 
 //socket.on('realisticData', handleBoardgamesData);
 
-//socket.on('realisticData', handleBoardgamesLDAData);
+socket.on('realisticData', handleBoardgamesLDAData);
 
 socket.on('realisticData', handleRealisticData);
 

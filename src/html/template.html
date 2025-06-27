@@ -38,14 +38,14 @@
                 <!-- Buttons to call our visualizations -->
                 <fieldset>
                     <legend>Choose visualizations to draw</legend>
-                    <input class="class_checkbox_vis" type="checkbox" id="check_kmeans"
-                        name="check_kmeans" value="kmeans" checked="true"/>
+                    <input class="class_checkbox_vis" type="checkbox" id="check_kmeans" name="check_kmeans"
+                        value="kmeans" checked="true" />
                     <label for="check_kmeans">Draw K-means</label><br>
-                    <input class="class_checkbox_vis" type="checkbox" id="check_lollipop"
-                        name="check_lollipop" value="lollipop" checked="true"/>
+                    <input class="class_checkbox_vis" type="checkbox" id="check_lollipop" name="check_lollipop"
+                        value="lollipop" checked="true" />
                     <label for="check_lollipop">Draw Lollipop</label><br>
-                    <input class="class_checkbox_vis" type="checkbox" id="check_scatterplot"
-                        name="check_scatterplot" value="scatterplot" checked="true"/>
+                    <input class="class_checkbox_vis" type="checkbox" id="check_scatterplot" name="check_scatterplot"
+                        value="scatterplot" checked="true" />
                     <label for="check_scatterplot">Draw Scatterplot</label>
                 </fieldset>
                 <div style="padding-bottom: 20px;">
@@ -65,8 +65,8 @@
                 <div style="padding-bottom: 20px;">
                     <label for="classes_options">Option for class selection</label>
                     <select name="classes_options" id="classes_options">
-                        <option value="ratings">Rating</option>
-                        <option value="year">Year</option>
+                        <option value="avgRating">Rating</option>
+                        <option value="complexity">Complexity</option>
                     </select>
                 </div>
 
@@ -77,33 +77,42 @@
                         name="check_minplayers" value="minplayers" />
                     <label for="check_minplayers">Minplayers</label><br>
 
-                    <input class="class_checkbox" checked="true" type="checkbox" id="check_minplaytime"
-                        name="check_minplaytime" value="minplaytime" />
-                    <label for="check_minplaytime">Minplaytime</label><br>
-
                     <input class="class_checkbox" type="checkbox" id="check_maxplayers" name="check_maxplayers"
                         value="maxplayers" />
                     <label for="check_maxplayers">Maxplayers</label><br>
 
-                    <input class="class_checkbox" type="checkbox" id="check_maxplaytime" name="check_maxplaytime"
-                        value="maxplaytime" />
-                    <label for="check_maxplaytime">Minplayers</label><br>
+                    <input class="class_checkbox" checked="false" type="checkbox" id="check_minplayersrec"
+                        name="check_minplayersrec" value="minPlayersRec" />
+                    <label for="check_minplayersrec">Minplayers (Rec)</label><br>
+
+                    <input class="class_checkbox" type="checkbox" id="check_maxplayersrec" name="check_maxplayersrec"
+                        value="maxPlayersRec" />
+                    <label for="check_maxplayersrec">Maxplayers (Rec)</label><br>
+
+                    <input class="class_checkbox" checked="false" type="checkbox" id="check_minplayersbest"
+                        name="check_minplayersbest" value="minPlayersBest" />
+                    <label for="check_minplayers">Minplayers (Best)</label><br>
+
+                    <input class="class_checkbox" type="checkbox" id="check_maxplayersbest" name="check_maxplayersbest"
+                        value="maxplayersbest" />
+                    <label for="check_maxplayers">Maxplayers (Best)</label><br>
+
+                    <input class="class_checkbox" checked="true" type="checkbox" id="check_minplaytime"
+                        name="check_minplaytime" value="minTime" />
+                    <label for="check_mintime">MinTime</label><br>
+
+                    <input class="class_checkbox" checked="true" type="checkbox" id="check_maxplaytime"
+                        name="check_maxplaytime" value="maxTime" />
+                    <label for="check_maxtime">MaxTime</label><br>
 
                     <input class="class_checkbox" type="checkbox" id="check_minage" name="check_minage"
-                        value="minage" />
+                        value="minAge" />
                     <label for="check_minage">Minage</label><br>
-
-                    <input hidden="true" class="class_checkbox" type="checkbox" id="check_ratings" name="check_ratings"
-                        value="ratings" />
-                    <label hidden="true" for="check_ratings" id="label_ratings">Rating</label><br>
-
-                    <input class="class_checkbox" type="checkbox" id="check_year" name="check_year" value="year" />
-                    <label for="check_year" id="label_year">Year</label><br>
                 </fieldset>
 
 
                 <button hidden id="load_realistic_data_button" class="button">Load kMeans data</button>
-                
+
                 <h3 class="section_title">k-Means</h3>
                 <label for="number_of_k">Number of K for kMeans</label>
                 <input type="text" id="number_of_k" value="2" name="max_weight" placeholder="Number of k..." />
@@ -126,7 +135,7 @@
 
 
                 <!-- This button should do all the work -->
-                
+
             </div>
         </div>
         <div hidden="true" class="visualizations_project_2">
@@ -164,16 +173,16 @@
         <div class="main_div">
             <div class="history">
                 <div class="tab" id="history_tab">
-                    <button id="history_0_button" class="tablinks tablinks_history"
-                        id="history_0_button">Plot 1</button>
-                    <button id="history_1_button" class="tablinks tablinks_history"
-                        id="history_1_button">Plot 2</button>
-                    <button id="history_2_button" class="tablinks tablinks_history"
-                        id="history_2_button">Plot 3</button>
-                    <button id="history_3_button" class="tablinks tablinks_history"
-                        id="history_3_button">Plot 4</button>
-                    <button id="history_4_button" class="tablinks tablinks_history"
-                        id="history_4_button">Plot 5</button>
+                    <button id="history_0_button" class="tablinks tablinks_history" id="history_0_button">Plot
+                        1</button>
+                    <button id="history_1_button" class="tablinks tablinks_history" id="history_1_button">Plot
+                        2</button>
+                    <button id="history_2_button" class="tablinks tablinks_history" id="history_2_button">Plot
+                        3</button>
+                    <button id="history_3_button" class="tablinks tablinks_history" id="history_3_button">Plot
+                        4</button>
+                    <button id="history_4_button" class="tablinks tablinks_history" id="history_4_button">Plot
+                        5</button>
                 </div>
             </div>
             <div class="visualizations">

@@ -67,7 +67,8 @@ export function kMeansPipeline(gameItems, k = 3) {
     }
 }
 
-function normalizeData(data) {
+export function normalizeData(data) {
+    console.log(data);
     const numFeatures = data[0].length;
     const mins = Array(numFeatures).fill(Infinity);
     const maxs = Array(numFeatures).fill(-Infinity);

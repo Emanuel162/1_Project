@@ -88,7 +88,8 @@ export function draw_scatterplot(data, active_tab = 0, relative_size = true) {
     })
     .attr('r', 5)
     .attr('cx', (d) => margin.left + xScale(d[0]))
-    .attr('cy', (d) => yScale(d[1]) + margin.top);
+    .attr('cy', (d) => yScale(d[1]) + margin.top)
+    .attr('stroke', 'black');
 
   scatterplot_circle.exit().remove();
 
