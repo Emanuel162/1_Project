@@ -43,14 +43,15 @@ const draw_lollipop = (data, active_tab = 0) => {
     .range([margin.left, width - margin.right])
     .domain(data.map((boardgame) => boardgame.title))
     .padding(1);
-
+   
   g_x_axis_lollipop
     .attr('transform', 'translate(0,' + height + ')')
     .call(d3.axisBottom(xScale))
     .selectAll('text')
     .attr('transform', 'translate(-10,0)rotate(-45)')
-    .style('text-anchor', 'end');
-
+    .style('text-anchor', 'end')
+    .style('opacity', 0);
+ 
   const yScale = d3.scaleLinear().domain([0, 1]).range([height, 0]);
 
   g_y_axis_lollipop
@@ -77,7 +78,20 @@ const draw_lollipop = (data, active_tab = 0) => {
     .attr('cy', (d) => yScale(d.rating))
     .attr('r', '4')
     .style('fill', '#69b3a2')
-    .attr('stroke', 'black');
+    .attr('stroke', 'black')
+    .on("mouseover", function (event, d) {
+      d3.select("body")
+        .append("div")
+        .attr("class", "tooltip")
+        .html(`Title: ${d.title}`)
+        .style("left", (event.pageX + 10) + "px")
+        .style("top", (event.pageY - 20) + "px");
+      d3.select(this).attr("r", 7);
+    })
+    .on("mouseout", function () {
+      d3.selectAll(".tooltip").remove();
+      d3.select(this).attr("r", 5);
+    });
 };
 
 export { draw_lollipop };

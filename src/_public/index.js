@@ -168,6 +168,18 @@ const handleBoardgamesData = (payload) => {
 
     let active_tab = history_count % 5;
 
+    if (payload.length >= 40) {
+        const p = document.createElement('p');
+        p.id = "too_many_elements"
+        p.innerText = "The selected data is too big to be displayed here.";
+        div.appendChild(p);
+
+        return;
+    }
+    if (div.children.namedItem('too_many_elements')) {
+        div.removeChild(div.children.namedItem('too_many_elements'));
+    }
+
     data.lollipop = mapData(payload.preprocessedData);
     draw_lollipop(data.lollipop, active_tab);
 };
@@ -229,13 +241,21 @@ const handleRealisticData = (payload) => {
     draw_scatterplot_kmeans(kMeans, active_tab)
 
 }
-
-socket.on('freshData', handleData);
+// Using old data
+//socket.on('freshData', handleData);
 
 socket.on('boardgamesData', handleBoardgamesData);
 socket.on('boardgamesLDAData', handleBoardgamesLDAData);
 
+// Using new data
+
+//socket.on('realisticData', handleBoardgamesData);
+
+//socket.on('realisticData', handleBoardgamesLDAData);
+
 socket.on('realisticData', handleRealisticData);
+
+
 
 let width = 0;
 let height = 0;
@@ -262,10 +282,9 @@ let checkSize = setInterval(() => {
 const mapData = (data) => {
     return data.map((boardgameArray) => {
         return {
-            minage: boardgameArray[0],
-            id: boardgameArray[1],
-            title: boardgameArray[2],
-            rating: boardgameArray[3],
+            id: boardgameArray[0],
+            title: boardgameArray[1],
+            rating: boardgameArray[2],
         };
     });
 };
