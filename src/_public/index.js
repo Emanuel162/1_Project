@@ -167,13 +167,16 @@ const handleBoardgamesData = (payload) => {
     console.log(payload);
 
     let active_tab = history_count % 5;
+    const divTabId = 'lollipop_div_' + active_tab;
 
-    if (payload.length >= 40) {
+    const div = document.getElementById(divTabId);
+
+    if (parseInt(document.getElementById('classes_options_top_x').value) > 40) {
         const p = document.createElement('p');
         p.id = "too_many_elements"
+        p.name = "too_many_elements"
         p.innerText = "The selected data is too big to be displayed here.";
         div.appendChild(p);
-
         return;
     }
     if (div.children.namedItem('too_many_elements')) {
